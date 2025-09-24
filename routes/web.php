@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 Route::get('/', function () {
@@ -36,7 +31,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Rute untuk Nasabah
     Route::prefix('nasabah')->middleware('role:nasabah')->name('nasabah.')->group(function () {
-        // Ganti rute yang salah
         Route::get('/dashboard', [NasabahController::class, 'index'])->name('dashboard');
         Route::get('/riwayat', [NasabahController::class, 'riwayat'])->name('riwayat');
     });
@@ -45,11 +39,15 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('petugas')->middleware('role:petugas')->name('petugas.')->group(function () {
         Route::get('/dashboard', [PetugasController::class, 'dashboard'])->name('dashboard');
         
-        // Menggunakan Route::resource untuk mengelola rute setoran
-        Route::resource('setoran', SetoranController::class)->only(['index', 'create', 'store']);
+        // Rute untuk setoran
+        Route::get('/setoran', [PetugasController::class, 'indexSetoran'])->name('setoran.index');
+        Route::get('/setoran/create', [PetugasController::class, 'createSetoran'])->name('setoran.create');
+        Route::post('/setoran', [PetugasController::class, 'storeSetoran'])->name('setoran.store');
 
-        // Rute lain yang tidak termasuk resource
+        // Rute untuk Kelola Sampah
         Route::get('/kelola-sampah', [KelolaSampahController::class, 'index'])->name('sampah.index');
+        
+        // Rute baru untuk mengirim laporan
         Route::post('/laporan/kirim', [PetugasController::class, 'kirimLaporan'])->name('laporan.kirim');
     });
 
@@ -58,8 +56,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/setoran', [SetoranAdminController::class, 'index'])->name('setoran.index');
         Route::get('/nasabah', [NasabahAdminController::class, 'index'])->name('nasabah.index');
-        
-        // Perbaiki pemanggilan controller untuk rute kontribusi
         Route::get('/nasabah/{nasabah}/kontribusi', [NasabahAdminController::class, 'contribution'])->name('nasabah.contribution');
     });
 });

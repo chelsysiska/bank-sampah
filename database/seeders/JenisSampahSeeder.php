@@ -2,15 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\JenisSampah;
+use Illuminate\Support\Facades\DB;
 
 class JenisSampahSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        JenisSampah::insert([
+        DB::table('jenis_sampahs')->insert([ // Perbaikan: Mengubah 'jenis_sampah' menjadi 'jenis_sampahs'
             ['nama' => 'Plastik Bening', 'harga_per_kilo' => 3500],
             ['nama' => 'Botol Plastik', 'harga_per_kilo' => 4000],
             ['nama' => 'Kertas', 'harga_per_kilo' => 2500],

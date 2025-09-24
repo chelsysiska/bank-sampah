@@ -3,30 +3,47 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Setoran;
 use App\Models\Laporan;
+use App\Models\JenisSampah;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        $laporans = Laporan::with('petugas')->latest()->paginate(20);
+        // Hitung total pendapatan dan total berat dari tabel laporan
+        // Ini adalah data yang sudah dikonsolidasikan oleh petugas
+        $totalPendapatanSemuaNasabah = Laporan::sum('total_harga');
+        $totalBeratSemuaNasabah = Laporan::sum('total_berat');
 
-        // Ambil data agregat untuk grafik
-        $grafikData = DB::table('setoran')
-                        ->join('jenis_sampah', 'setoran.jenis_sampah_id', '=', 'jenis_sampah.id')
-                        ->select(
-                            'jenis_sampah.nama as jenis',
-                            DB::raw('SUM(setoran.berat) as total_berat')
-                        )
-                        ->groupBy('jenis_sampah.nama')
-                        ->orderBy('total_berat', 'desc')
-                        ->get();
-        
-        // HENTIKAN EKSEKUSI DAN TAMPILKAN DATA
-        dd($grafikData);
+        // Ambil data untuk rekap laporan bulanan dari tabel laporans
+        // Data ini sudah otomatis terkelompokkan per bulan/tahun saat dikirim petugas
+        $laporans = Laporan::with('petugas')
+            ->orderBy('tahun', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->paginate(10);
+            
+        // Data untuk grafik bulanan per jenis sampah
+        // Query ini tetap pada tabel Setoran karena ini adalah data riwayat semua setoran
+        $grafikBulananData = Setoran::select(
+            DB::raw('MONTH(tanggal_setoran) as month'),
+            'jenis_sampah_id',
+            DB::raw('SUM(berat) as total_berat')
+        )
+        ->groupBy('month', 'jenis_sampah_id')
+        ->orderBy('month', 'asc')
+        ->get();
 
-        return view('admin.dashboard', compact('laporans', 'grafikData'));
+        $jenisSampahData = JenisSampah::all();
+
+        return view('admin.dashboard', compact(
+            'totalPendapatanSemuaNasabah', 
+            'totalBeratSemuaNasabah', 
+            'laporans', 
+            'grafikBulananData',
+            'jenisSampahData'
+        ));
     }
 }

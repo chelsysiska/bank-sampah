@@ -5,28 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JenisSampah extends Model
+class Nasabah extends Model
 {
     use HasFactory;
     
-    // Secara eksplisit menentukan nama tabel ke 'jenis_sampahs'
-    protected $table = 'jenis_sampahs';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama',
-        'harga_per_kilo',
+        'name',
+        'email',
+        'nik',
+        'saldo',
+        'password',
     ];
 
     /**
-     * Get the setorans for the jenis_sampah.
+     * Get the setorans for the nasabah.
      */
     public function setorans()
     {
-        return $this->hasMany(Setoran::class, 'jenis_sampah_id');
+        return $this->hasMany(Setoran::class, 'nasabah_id');
     }
 }

@@ -6,17 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::table('setoran', function (Blueprint $table) {
-            $table->dropColumn('total');
+            // Tambahkan kolom is_reported dengan nilai default false
+            $table->boolean('is_reported')->default(false)->after('total_harga'); 
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('setoran', function (Blueprint $table) {
-            $table->decimal('total', 15, 2)->nullable(); // Jika ingin kembalikan, buat nullable dulu
+            $table->dropColumn('is_reported');
         });
     }
 };
