@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Petugas\SetoranController;
-use App\Http\Controllers\Admin\AdminController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Petugas\PetugasController;
-use App\Http\Controllers\Petugas\KelolaSampahController;
+use App\Http\Controllers\Petugas\KelolaSampahController; 
 use App\Http\Controllers\Nasabah\NasabahController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SetoranAdminController;
 use App\Http\Controllers\Admin\NasabahAdminController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +44,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/setoran/create', [PetugasController::class, 'createSetoran'])->name('setoran.create');
         Route::post('/setoran', [PetugasController::class, 'storeSetoran'])->name('setoran.store');
 
-        // Rute untuk Kelola Sampah
-        Route::get('/kelola-sampah', [KelolaSampahController::class, 'index'])->name('sampah.index');
+        // Rute untuk Kelola Sampah (CRUD) menggunakan Route::resource
+        Route::resource('sampah', KelolaSampahController::class)->except(['show']);
         
         // Rute baru untuk mengirim laporan
         Route::post('/laporan/kirim', [PetugasController::class, 'kirimLaporan'])->name('laporan.kirim');

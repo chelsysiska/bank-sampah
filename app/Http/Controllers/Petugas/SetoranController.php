@@ -61,6 +61,4 @@ class SetoranController extends Controller
 
         return redirect()->route('petugas.setoran.index')->with('success', 'Setoran berhasil disimpan!');
     }
-
-    // Catatan: Anda perlu membuat metode di controller lain untuk Dashboard.
 }
