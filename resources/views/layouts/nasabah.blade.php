@@ -1,240 +1,547 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Bank Sampah</title>
-
+    <title>@yield('title', 'Nasabah Dashboard') - Trash2Cash</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .overlay { transition: opacity 0.3s ease-in-out; }
-        .gradient-green { background: linear-gradient(135deg, #10b981, #059669); }
-        body {
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(5, 150, 105, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
-                linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-            position: relative;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
             overflow-x: hidden;
+            transition: margin-left 0.3s ease-in-out;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #d1fae5 100%);
+            min-height: 100vh;
         }
-        body::before {
-            content: '';
+        
+        /* Animated Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23059669' fill-opacity='0.02'%3E%3Cpath d='M20 0v40M0 20h40'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: 60px 60px, 40px 40px;
-            background-position: 0 0, 20px 20px;
             z-index: -2;
-            animation: float 20s ease-in-out infinite;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(5, 150, 105, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
+            animation: bgFloat 20s ease-in-out infinite;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.02); }
+            66% { transform: translate(-20px, 15px) scale(0.98); }
         }
-        .header-glow {
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15), 0 0 30px rgba(16, 185, 129, 0.1);
+        
+        .gradient-bg { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
         }
-        .nav-item {
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .card-hover { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
-        .nav-item::before {
+        
+        .card-hover::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
         }
-        .nav-item:hover::before {
+        
+        .card-hover:hover::before {
             left: 100%;
         }
-        .user-dropdown {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 0 20px rgba(16, 185, 129, 0.05);
+        
+        .card-hover:hover { 
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        .icon-spin {
-            animation: spin 3s linear infinite;
+        
+        .sidebar-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        .bounce-in {
-            animation: bounceIn 0.8s ease-out;
+        
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .pulse-glow {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-        }
-        .floating-icon {
+        
+        .nav-item::before {
+            content: '';
             position: absolute;
-            font-size: 1.5rem;
-            color: rgba(16, 185, 129, 0.1);
-            animation: float-icon 6s ease-in-out infinite;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-item.active::before,
+        .nav-item:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .nav-item:hover {
+            transform: translateX(8px);
+        }
+        
+        /* Floating animation for decorative elements */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Pulse animation for important elements */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.8); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        /* Text glow effect */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            #sidebar.sidebar-open {
+                transform: translateX(0);
+            }
+            
+            #backdrop {
+                display: none;
+                opacity: 0;
+            }
+            
+            #backdrop.backdrop-open {
+                display: block;
+                opacity: 1;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            body.sidebar-open {
+                overflow: hidden;
+            }
+            
+            .toggle-mobile {
+                display: flex;
+            }
+            
+            .toggle-desktop {
+                display: none;
+            }
+        }
+        
+        /* Desktop Styles */
+        @media (min-width: 769px) {
+            #sidebar {
+                transform: translateX(0);
+                width: 16rem;
+            }
+            
+            #sidebar.sidebar-closed {
+                transform: translateX(-100%);
+                width: 0;
+            }
+            
+            #backdrop {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 16rem;
+                width: calc(100% - 16rem);
+                transition: all 0.4s ease-in-out;
+            }
+            
+            .main-content.sidebar-closed {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .toggle-mobile {
+                display: none;
+            }
+            
+            .toggle-desktop {
+                display: flex;
+            }
+        }
+        
+        .toggle-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .toggle-icon {
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .sidebar-closed .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Staggered animation for cards */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .animate-stagger > * {
+            animation: slideInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .animate-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+        .animate-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+        .animate-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+        .animate-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Eco particles */
+        .eco-particle {
+            position: absolute;
             pointer-events: none;
             z-index: -1;
-        }
-        .floating-icon:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
-        .floating-icon:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; font-size: 2rem; }
-        .floating-icon:nth-child(3) { bottom: 20%; left: 10%; animation-delay: 2s; }
-        .floating-icon:nth-child(4) { top: 60%; right: 5%; animation-delay: 3s; font-size: 1.2rem; }
-        .floating-icon:nth-child(5) { bottom: 10%; left: 20%; animation-delay: 4s; }
-        @keyframes float-icon {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
-        }
-        .wavy-line {
-            position: absolute;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #10b981, transparent);
-            animation: wave 3s ease-in-out infinite;
-        }
-        @keyframes wave {
-            0%, 100% { opacity: 0.5; transform: scaleX(0); }
-            50% { opacity: 1; transform: scaleX(1); }
-        }
-        .leaf-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 Q60 30 50 40 Q40 30 50 20' fill='%2310b981' fill-opacity='0.02'/%3E%3Cpath d='M20 50 Q30 60 20 70 Q10 60 20 50' fill='%23059669' fill-opacity='0.03'/%3E%3C/svg%3E");
-            background-size: 100px 100px;
-            animation: drift 15s linear infinite;
-        }
-        @keyframes drift {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
+            opacity: 0.6;
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased leaf-pattern">
-
-    <div id="main-content" class="flex flex-col min-h-screen relative">
-        <!-- Floating Icons Dekoratif -->
-        <i class="fas fa-leaf floating-icon"></i>
-        <i class="fas fa-recycle floating-icon"></i>
-        <i class="fas fa-leaf floating-icon"></i>
-        <i class="fas fa-recycle floating-icon"></i>
-        <i class="fas fa-leaf floating-icon"></i>
-
-        <header class="bg-white header-glow p-4 flex justify-between items-center z-30 relative bounce-in pulse-glow">
-            <div class="flex items-center">
-                <i class="fas fa-recycle icon-spin text-green-600 text-3xl mr-2"></i>
-                <span class="text-2xl font-bold text-gray-800 bg-gradient-to-r from-green-600 via-emerald-600 to-green-800 bg-clip-text text-transparent">TRASH2CASH</span>
-                <span class="ml-2 text-sm bg-green-100 text-green-700 px-2 py-1 rounded-full animate-pulse">Eco-Friendly</span>
+<body class="min-h-screen relative">
+    
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Eco Particles -->
+    <div id="eco-particles"></div>
+    
+    <!-- Mobile Backdrop -->
+    <div id="backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300 backdrop-blur-sm"></div>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full bg-white/95 backdrop-blur-lg shadow-2xl z-50 sidebar-transition overflow-hidden border-r border-green-200/30">
+        <!-- Header Section -->
+        <div class="gradient-bg p-6 relative overflow-hidden border-b border-white/20">
+            <!-- Tombol Toggle untuk Desktop -->
+            <button id="toggle-desktop-btn" class="toggle-desktop absolute top-4 right-4 text-white hover:text-gray-200 transition-colors toggle-btn floating">
+                <i class="fas fa-chevron-left text-lg toggle-icon"></i>
+            </button>
+            
+            <!-- Tombol Close untuk Mobile -->
+            <button id="close-sidebar" class="toggle-mobile absolute top-4 right-4 text-white hover:text-gray-200 transition-colors floating">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="relative z-10 pr-8">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm border border-white/30 floating">
+                    <i class="fas fa-recycle text-2xl text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white text-glow text-center">Trash2Cash</h1>
+                <p class="text-sm text-white/80 text-center mt-2">Eco-Friendly Banking</p>
             </div>
-
-            <div class="flex items-center space-x-4 relative">
-                <nav class="hidden md:flex items-center space-x-2">
-                    <a href="{{ route('nasabah.dashboard') }}"
-                       class="nav-item py-2 px-4 rounded-xl text-gray-600 hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 hover:text-green-600 transition-all duration-300 transform hover:scale-110 hover:rotate-1 shadow-md border border-green-200 hover:border-green-400 flex items-center"
-                       title="Dashboard Utama">
-                       <i class="fas fa-tachometer-alt mr-2 text-green-500"></i>Dashboard
-                    </a>
-                    <a href="{{ route('nasabah.riwayat') }}"
-                       class="nav-item py-2 px-4 rounded-xl text-gray-600 hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 hover:text-green-600 transition-all duration-300 transform hover:scale-110 hover:rotate-1 shadow-md border border-green-200 hover:border-green-400 flex items-center"
-                       title="Riwayat Transaksi">
-                       <i class="fas fa-history mr-2 text-green-500"></i>Riwayat Setoran
-                    </a>
-                </nav>
-
-                <div class="relative inline-block text-left" x-data="{ open: false }" @click.outside="open = false">
-                    <div>
-                        <button type="button" @click="open = !open"
-                            class="inline-flex justify-center items-center w-full rounded-full shadow-lg px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 text-sm font-semibold text-gray-700 hover:from-green-100 hover:to-emerald-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-green-500 transition-all duration-200 transform hover:scale-105 hover:shadow-xl border border-green-200"
-                            id="menu-button" aria-expanded="true" aria-haspopup="true">
-                            <i class="fas fa-user-circle text-2xl text-gray-500 hover:text-green-600 mr-2"></i>
-                            <span class="hidden md:block font-medium">{{ Auth::user()->name }}</span>
-                            <i class="fas fa-chevron-down -mr-1 ml-2 h-5 w-5 transition-transform duration-200" :class="{'transform rotate-180': open}"></i>
-                        </button>
-                    </div>
-
-                    <div x-show="open"
-                         x-transition:enter="transition ease-out duration-150"
-                         x-transition:enter-start="transform opacity-0 scale-95"
-                         x-transition:enter-end="transform opacity-100 scale-100"
-                         x-transition:leave="transition ease-in duration-100"
-                         x-transition:leave-start="transform opacity-100 scale-100"
-                         x-transition:leave-end="transform opacity-0 scale-95"
-                         class="origin-top-right absolute right-0 mt-2 w-64 rounded-2xl user-dropdown bg-white ring-1 ring-black ring-opacity-5 focus:outline-none py-2"
-                         role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                        <div class="px-2" role="none">
-                            <div class="text-xs text-gray-500 px-4 py-1 border-b border-gray-100">Selamat datang!</div>
-                            <form method="POST" action="{{ route('logout') }}" class="block" role="menuitem" tabindex="-1">
-                                @csrf
-                                <button type="submit" class="text-red-700 w-full text-left block px-4 py-3 text-sm hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-200 transform hover:scale-105 flex items-center">
-                                    <i class="fas fa-sign-out-alt mr-3 text-red-500"></i> Logout
-                                </button>
-                            </form>
+            
+            <!-- Decorative elements -->
+            <div class="absolute -bottom-4 -right-4 w-20 h-20 bg-white/10 rounded-full"></div>
+            <div class="absolute -top-4 -left-4 w-16 h-16 bg-white/5 rounded-full"></div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mt-8 px-4 h-[calc(100vh-12rem)] overflow-y-auto">
+            <ul class="space-y-3">
+                <li>
+                    <a href="{{ route('nasabah.dashboard') }}" 
+                       class="nav-item flex items-center px-4 py-4 rounded-2xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.dashboard') ? 'bg-green-50 text-green-600 active pulse-glow' : '' }}">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-tachometer-alt text-lg {{ request()->routeIs('nasabah.dashboard') ? 'text-green-600' : 'text-green-400 group-hover:text-green-600' }}"></i>
                         </div>
-                    </div>
+                        <span class="font-semibold text-lg">Dashboard</span>
+                        <i class="fas fa-chevron-right ml-auto text-gray-300 group-hover:text-green-400 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('nasabah.riwayat') }}" 
+                       class="nav-item flex items-center px-4 py-4 rounded-2xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.riwayat') ? 'bg-green-50 text-green-600 active pulse-glow' : '' }}">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-history text-lg {{ request()->routeIs('nasabah.riwayat') ? 'text-blue-600' : 'text-blue-400 group-hover:text-blue-600' }}"></i>
+                        </div>
+                        <span class="font-semibold text-lg">Riwayat Setoran</span>
+                        <i class="fas fa-chevron-right ml-auto text-gray-300 group-hover:text-blue-400 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </li>
+                <li class="mt-8 pt-6 border-t border-gray-100">
+                    <a href="{{ route('logout') }}" 
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                       class="nav-item flex items-center px-4 py-4 rounded-2xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-sign-out-alt text-lg text-red-400 group-hover:text-red-600"></i>
+                        </div>
+                        <span class="font-semibold text-lg">Logout</span>
+                        <i class="fas fa-chevron-right ml-auto text-gray-300 group-hover:text-red-400 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-gray-500 text-sm border-t border-gray-100">
+            <p>♻️ Making the World Greener</p>
+        </div>
+        
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+            @csrf
+        </form>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content min-h-screen p-4 md:p-6 transition-all duration-300">
+        <!-- Top Header -->
+        <header class="glass-effect rounded-3xl p-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 relative overflow-hidden">
+            <!-- Background decoration -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-green-200/20 rounded-full -translate-y-16 translate-x-16"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-200/20 rounded-full translate-y-12 -translate-x-12"></div>
+            
+            <div class="flex items-center space-x-4 w-full md:w-auto relative z-10">
+                <!-- Tombol Toggle Sidebar untuk Mobile -->
+                <button id="toggle-mobile-btn" class="toggle-mobile p-3 rounded-xl bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300 toggle-btn floating">
+                    <i class="fas fa-bars text-green-600 text-lg"></i>
+                </button>
+                
+                <!-- Tombol Toggle Sidebar untuk Desktop -->
+                <button id="toggle-desktop-btn-header" class="toggle-desktop p-3 rounded-xl bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300 toggle-btn mr-4 floating">
+                    <i class="fas fa-bars text-green-600 text-lg"></i>
+                </button>
+                
+                <div class="min-w-0 flex-1 md:flex-initial">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center flex-wrap">
+                        <i class="fas fa-leaf text-green-500 mr-3 flex-shrink-0 floating" style="animation-delay: 0.5s;"></i>
+                        <span class="break-words bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">@yield('header_title', 'Dashboard Nasabah')</span>
+                    </h2>
+                    <p class="text-gray-600 mt-2 text-base">@yield('header_subtitle', 'Selamat datang di dashboard nasabah')</p>
                 </div>
             </div>
+            <div class="flex items-center space-x-4 w-full md:w-auto justify-end relative z-10">
+                <div class="text-right">
+                    <p class="text-gray-700 font-semibold text-lg">Halo, <span class="text-green-600">{{ auth()->user()->name }}</span></p>
+                    <p class="text-gray-500 text-sm flex items-center justify-end">
+                        <i class="fas fa-shield-alt text-green-400 mr-1"></i>
+                        Akun Terverifikasi
+                    </p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10b981&color=fff&size=64&bold=true&font-size=0.8" 
+                     alt="Avatar" class="w-12 h-12 md:w-14 md:h-14 rounded-2xl shadow-lg border-2 border-white floating">
+            </div>
         </header>
+        
+        <!-- Alert Messages -->
+        @if (session('success'))
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 mb-6 rounded-2xl shadow-lg animate-stagger" role="alert">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-2xl mr-3"></i>
+                    <span class="text-base font-medium">{{ session('success') }}</span>
+                </div>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white p-4 mb-6 rounded-2xl shadow-lg animate-stagger" role="alert">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-2xl mr-3"></i>
+                    <span class="text-base font-medium">{{ session('error') }}</span>
+                </div>
+            </div>
+        @endif
 
-        <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 relative">
-            <!-- Elemen Dekoratif Tambahan -->
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 opacity-80 wavy-line"></div>
-            <div class="absolute bottom-0 right-0 w-48 h-48 bg-green-200 rounded-full opacity-20 -z-10 transform rotate-12"></div>
-            <div class="absolute top-1/4 left-0 w-32 h-32 bg-emerald-200 rounded-full opacity-15 -z-10 transform -translate-y-1/2 rotate-45"></div>
-            <div class="absolute top-3/4 right-0 w-24 h-24 bg-green-300 rounded-full opacity-10 -z-10 transform translate-x-1/2 -translate-y-1/2"></div>
-            <div class="absolute bottom-1/4 left-1/2 w-20 h-20 bg-emerald-100 rounded-full opacity-20 -z-10 transform -translate-x-1/2"></div>
-            <!-- Wavy lines tambahan untuk kedalaman -->
-            <div class="absolute top-20 left-0 w-1/3 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-40 wavy-line" style="animation-delay: 1s;"></div>
-            <div class="absolute bottom-32 right-0 w-1/4 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-30 wavy-line" style="animation-delay: 2s;"></div>
+        <!-- Content Area -->
+        <div class="animate-stagger">
             @yield('content')
-        </main>
-    </div>
-
+        </div>
+    </main>
+    
     <script>
-        // Tambahan JS sederhana untuk efek ramai (particles-like) tanpa library eksternal
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.innerHTML = '<i class="fas fa-leaf text-green-400 text-xs"></i>';
-            particle.className = 'absolute pointer-events-none animate-float-particle z-0';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            particle.style.opacity = Math.random() * 0.5 + 0.2;
-            document.getElementById('main-content').appendChild(particle);
-            setTimeout(() => particle.remove(), 5000);
-        }
-        function animateParticles() {
-            setInterval(createParticle, 3000);
-        }
-        // Mulai animasi setelah load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', animateParticles);
-        } else {
-            animateParticles();
-        }
-        // CSS untuk particle (inline untuk menghindari error)
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes float-particle {
-                0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-                100% { transform: translateY(-100vh) rotate(360deg) scale(0); opacity: 0; }
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('backdrop');
+            const mainContent = document.getElementById('main-content');
+            const body = document.body;
+
+            // Tombol-tombol toggle
+            const toggleMobileBtn = document.getElementById('toggle-mobile-btn');
+            const toggleDesktopBtn = document.getElementById('toggle-desktop-btn');
+            const toggleDesktopBtnHeader = document.getElementById('toggle-desktop-btn-header');
+            const closeSidebarBtn = document.getElementById('close-sidebar');
+
+            // State sidebar
+            let isSidebarOpen = window.innerWidth >= 769;
+
+            function openSidebar() {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-open');
+                    backdrop.classList.add('backdrop-open');
+                    body.classList.add('sidebar-open');
+                } else {
+                    sidebar.classList.remove('sidebar-closed');
+                    mainContent.classList.remove('sidebar-closed');
+                }
+                isSidebarOpen = true;
+                updateToggleIcons();
             }
-            .animate-float-particle { animation: float-particle linear infinite; }
-        `;
-        document.head.appendChild(style);
+
+            function closeSidebar() {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('sidebar-open');
+                    backdrop.classList.remove('backdrop-open');
+                    body.classList.remove('sidebar-open');
+                } else {
+                    sidebar.classList.add('sidebar-closed');
+                    mainContent.classList.add('sidebar-closed');
+                }
+                isSidebarOpen = false;
+                updateToggleIcons();
+            }
+
+            function toggleSidebar() {
+                if (isSidebarOpen) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            }
+
+            function updateToggleIcons() {
+                const icons = document.querySelectorAll('.toggle-icon');
+                icons.forEach(icon => {
+                    if (isSidebarOpen) {
+                        icon.classList.remove('fa-chevron-right');
+                        icon.classList.add('fa-chevron-left');
+                    } else {
+                        icon.classList.remove('fa-chevron-left');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                });
+            }
+
+            // Event listeners
+            if (toggleMobileBtn) toggleMobileBtn.addEventListener('click', toggleSidebar);
+            if (toggleDesktopBtn) toggleDesktopBtn.addEventListener('click', toggleSidebar);
+            if (toggleDesktopBtnHeader) toggleDesktopBtnHeader.addEventListener('click', toggleSidebar);
+            if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebar);
+            if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+            // Close sidebar ketika klik link navigasi (mobile)
+            document.querySelectorAll('#sidebar a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth < 768 && !this.href.includes('logout')) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Eco particles animation
+            function createEcoParticles() {
+                const particlesContainer = document.getElementById('eco-particles');
+                const particles = ['♻️', '🌱', '🌍', '💧', '🌿', '🍃'];
+                
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'eco-particle';
+                    particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    particle.style.opacity = Math.random() * 0.3 + 0.1;
+                    particle.style.animation = `float ${Math.random() * 10 + 10}s ease-in-out infinite`;
+                    particle.style.animationDelay = Math.random() * 5 + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            // Initialize
+            if (window.innerWidth >= 768) {
+                openSidebar();
+            } else {
+                closeSidebar();
+            }
+
+            createEcoParticles();
+
+            // Add interactive effects to cards
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px) scale(0.95)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0) scale(1)';
+                }, index * 150);
+            });
+
+            // Add parallax effect to background
+            document.addEventListener('mousemove', function(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                document.querySelector('.animated-bg').style.transform = 
+                    `translate(${x * 20}px, ${y * 20}px) scale(1.02)`;
+            });
+        });
     </script>
+    
+    @stack('scripts')
 </body>
 </html>

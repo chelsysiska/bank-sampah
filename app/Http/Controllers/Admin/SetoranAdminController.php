@@ -10,10 +10,10 @@ class SetoranAdminController extends Controller
 {
     public function index()
     {
-        // Menggunakan with() untuk memuat relasi nasabah dan jenisSampah.
-        // Ini memastikan data terkait diambil dalam satu kueri, bukan untuk setiap baris.
+        // HANYA tampilkan setoran yang SUDAH dilaporkan (is_reported = true)
         $setorans = Setoran::with('nasabah', 'jenisSampah')
-                           ->latest()
+                           ->where('is_reported', true)
+                           ->orderBy('tanggal_setoran', 'desc')
                            ->paginate(20);
 
         return view('admin.setoran.index', compact('setorans'));

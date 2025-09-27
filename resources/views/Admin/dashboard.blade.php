@@ -8,81 +8,222 @@
 
 @section('content')
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-yellow-500">
-        <div class="flex items-center">
-            <i class="fas fa-money-bill-wave text-4xl text-yellow-500 mr-4"></i>
-            <div>
-                <h3 class="text-lg font-semibold text-gray-700">Total Pendapatan Semua Nasabah</h3>
-                <p class="text-3xl font-bold text-yellow-600 mt-1">
-                    Rp{{ number_format($totalPendapatanSemuaNasabah, 0, ',', '.') }}
-                </p>
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-8">
+    <!-- Total Pendapatan Card -->
+    <div class="card-hover bg-gradient-to-br from-yellow-50 to-amber-50 p-6 md:p-8 rounded-2xl shadow-lg border-l-4 border-yellow-500 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 opacity-10 rounded-full -translate-y-8 translate-x-8"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-yellow-200 opacity-10 rounded-full translate-y-8 -translate-x-8"></div>
+        
+        <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                    <i class="fas fa-money-bill-wave text-2xl text-white"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-2">Total Pendapatan Semua Nasabah</h3>
+                    <p class="text-2xl md:text-3xl lg:text-4xl font-bold text-yellow-600 break-all">
+                        Rp{{ number_format($totalPendapatanSemuaNasabah, 0, ',', '.') }}
+                    </p>
+                    <div class="mt-2 flex items-center text-sm text-yellow-700">
+                        <i class="fas fa-chart-line mr-1"></i>
+                        <span>Total akumulasi</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500">
-        <div class="flex items-center">
-            <i class="fas fa-weight-hanging text-4xl text-green-500 mr-4"></i>
-            <div>
-                <h3 class="text-lg font-semibold text-gray-700">Total Berat Sampah</h3>
-                <p class="text-3xl font-bold text-green-600 mt-1">
-                    {{ number_format($totalBeratSemuaNasabah, 2, ',', '.') }} kg
-                </p>
+
+    <!-- Total Berat Sampah Card -->
+    <div class="card-hover bg-gradient-to-br from-green-50 to-emerald-50 p-6 md:p-8 rounded-2xl shadow-lg border-l-4 border-green-500 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 opacity-10 rounded-full -translate-y-8 translate-x-8"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-green-200 opacity-10 rounded-full translate-y-8 -translate-x-8"></div>
+        
+        <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                    <i class="fas fa-weight-hanging text-2xl text-white"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-2">Total Berat Sampah</h3>
+                    <p class="text-2xl md:text-3xl lg:text-4xl font-bold text-green-600 break-all">
+                        {{ number_format($totalBeratSemuaNasabah, 2, ',', '.') }} kg
+                    </p>
+                    <div class="mt-2 flex items-center text-sm text-green-700">
+                        <i class="fas fa-recycle mr-1"></i>
+                        <span>Sampah terkumpul</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="bg-white shadow-lg rounded-2xl p-6 mb-8">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-        <i class="fas fa-file-alt mr-2 text-blue-600"></i>
-        Rekap Laporan Bulanan
-    </h3>
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-green-50">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">No</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">Petugas</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">Bulan & Tahun</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">Jumlah Setoran</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">Total Berat (kg)</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">Total Harga</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($laporans as $laporan)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $laporan->petugas?->name ?? 'N/A' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::createFromDate($laporan->tahun, $laporan->bulan)->translatedFormat('F Y') }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $laporan->jumlah_setoran }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ number_format($laporan->total_berat, 2) }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Rp{{ number_format($laporan->total_harga, 0, ',', '.') }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada laporan yang ditemukan.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+<!-- Monthly Report Table -->
+<div class="bg-white shadow-xl rounded-2xl overflow-hidden mb-8">
+    <!-- Table Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+        <h3 class="text-lg md:text-xl font-semibold text-white flex items-center">
+            <i class="fas fa-file-alt mr-2"></i>
+            <span>Rekap Laporan Bulanan</span>
+        </h3>
     </div>
-    <div class="mt-4">{{ $laporans->links() }}</div>
+    
+    <!-- Table Content -->
+    <div class="p-4 md:p-6">
+        <div class="overflow-x-auto -mx-2 md:mx-0">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden border border-gray-200 md:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gradient-to-r from-green-50 to-blue-50">
+                            <tr>
+                                <th scope="col" class="px-3 md:px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider whitespace-nowrap">No</th>
+                                <th scope="col" class="px-3 md:px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider">Petugas</th>
+                                <th scope="col" class="px-3 md:px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider whitespace-nowrap">Bulan & Tahun</th>
+                                <th scope="col" class="px-3 md:px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider whitespace-nowrap">Jumlah Setoran</th>
+                                <th scope="col" class="px-3 md:px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider whitespace-nowrap">Total Berat (kg)</th>
+                                <th scope="col" class="px-3 md:px-6 py-3 text-left text-xs font-bold text-green-600 uppercase tracking-wider whitespace-nowrap">Total Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($laporans as $laporan)
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-3 md:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <div class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full">
+                                            {{ $loop->iteration }}
+                                        </div>
+                                    </td>
+                                    <td class="px-3 md:px-6 py-4 text-sm text-gray-900">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                                <i class="fas fa-user text-white text-xs"></i>
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <span class="font-medium truncate block">{{ $laporan->petugas?->name ?? 'N/A' }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-3 md:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>
+                                            {{ \Carbon\Carbon::createFromDate($laporan->tahun, $laporan->bulan)->translatedFormat('F Y') }}
+                                        </div>
+                                    </td>
+                                    <td class="px-3 md:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-box text-green-600 text-xs"></i>
+                                            </div>
+                                            <span class="font-medium">{{ $laporan->jumlah_setoran }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-3 md:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-weight-hanging text-orange-600 text-xs"></i>
+                                            </div>
+                                            <span class="font-medium">{{ number_format($laporan->total_berat, 2) }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-3 md:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-money-bill text-yellow-600 text-xs"></i>
+                                            </div>
+                                            <span class="font-semibold text-green-600">Rp{{ number_format($laporan->total_harga, 0, ',', '.') }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-3 md:px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center text-gray-500">
+                                            <i class="fas fa-inbox text-4xl mb-4 text-gray-300"></i>
+                                            <h3 class="text-lg font-medium mb-2">Tidak ada laporan</h3>
+                                            <p class="text-sm">Tidak ada laporan yang ditemukan untuk periode ini.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination -->
+        @if($laporans->hasPages())
+            <div class="mt-6 flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    Menampilkan {{ $laporans->firstItem() }} - {{ $laporans->lastItem() }} dari {{ $laporans->total() }} data
+                </div>
+                <div>{{ $laporans->links() }}</div>
+            </div>
+        @endif
+    </div>
 </div>
 
-<hr class="my-8">
+<!-- Divider -->
+<div class="flex items-center my-8">
+    <div class="flex-1 h-px bg-gradient-to-r from-transparent to-gray-300"></div>
+    <div class="px-4 text-gray-500 font-medium">
+        <i class="fas fa-chart-bar mr-2"></i>
+        Analisis Data
+    </div>
+    <div class="flex-1 h-px bg-gradient-to-l from-transparent to-gray-300"></div>
+</div>
 
-<div class="bg-white shadow-lg rounded-2xl p-6">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-        <i class="fas fa-chart-line mr-2 text-green-600"></i>
-        Grafik Total Berat Sampah per Bulan
-    </h3>
-    @if ($grafikBulananData->isEmpty())
-        <p class="text-gray-500 text-center">Tidak ada data setoran yang dapat ditampilkan dalam grafik.</p>
-    @else
-        <canvas id="monthlyWasteChart" class="w-full"></canvas>
-    @endif
+<!-- Chart Section -->
+<div class="bg-white shadow-xl rounded-2xl overflow-hidden">
+    <!-- Chart Header -->
+    <div class="bg-gradient-to-r from-green-600 to-blue-600 px-6 py-4">
+        <h3 class="text-lg md:text-xl font-semibold text-white flex items-center">
+            <i class="fas fa-chart-line mr-2"></i>
+            <span>Grafik Total Berat Sampah per Bulan</span>
+        </h3>
+    </div>
+    
+    <!-- Chart Content -->
+    <div class="p-4 md:p-6">
+        @if ($grafikBulananData->isEmpty())
+            <div class="text-center py-16">
+                <div class="flex flex-col items-center justify-center text-gray-500">
+                    <i class="fas fa-chart-line text-6xl mb-6 text-gray-300"></i>
+                    <h3 class="text-xl font-medium mb-2">Tidak ada data</h3>
+                    <p class="text-sm max-w-md">Tidak ada data setoran yang dapat ditampilkan dalam grafik. Mulai tambahkan data setoran untuk melihat grafik.</p>
+                </div>
+            </div>
+        @else
+            <div class="relative">
+                <!-- Chart Loading Placeholder -->
+                <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-gray-50 rounded-lg">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Memuat grafik...</p>
+                    </div>
+                </div>
+                
+                <!-- Chart Canvas -->
+                <canvas id="monthlyWasteChart" class="w-full max-h-96" style="min-height: 400px;"></canvas>
+            </div>
+            
+            <!-- Chart Legend Info -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-blue-500 rounded mr-2"></div>
+                        <span>Data per bulan</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        <span>Hover pada grafik untuk detail</span>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
 </div>
 
 @endsection
@@ -92,13 +233,42 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Fix untuk sidebar toggle yang mungkin konflik
     document.addEventListener('DOMContentLoaded', function () {
+        // Pastikan sidebar dalam state yang benar
+        function checkSidebarState() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('backdrop');
+            
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('open');
+                backdrop.classList.add('hidden');
+            }
+        }
+        
+        checkSidebarState();
+        
+        // Chart code yang sudah ada...
         const grafikBulananData = @json($grafikBulananData);
         const jenisSampahData = @json($jenisSampahData);
+        
+        // Hide loading if no data
+        if (!grafikBulananData || grafikBulananData.length === 0) {
+            const loading = document.getElementById('chart-loading');
+            if (loading) loading.style.display = 'none';
+            return;
+        }
 
         const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
         const datasets = [];
-        const colors = ['#4A90E2', '#50C878', '#FFD700', '#FF6384', '#9966FF', '#FF9F40'];
+        const colors = [
+            { bg: '#4A90E2', border: '#357ABD' },
+            { bg: '#50C878', border: '#3A9B5C' },
+            { bg: '#FFD700', border: '#E6C200' },
+            { bg: '#FF6384', border: '#E5455A' },
+            { bg: '#9966FF', border: '#7A4DE6' },
+            { bg: '#FF9F40', border: '#E6852D' }
+        ];
         let colorIndex = 0;
 
         jenisSampahData.forEach(jenis => {
@@ -109,17 +279,27 @@
                 }
             });
 
+            const color = colors[colorIndex % colors.length];
             datasets.push({
                 label: jenis.nama,
                 data: dataPoints,
-                backgroundColor: colors[colorIndex % colors.length],
-                borderColor: colors[colorIndex % colors.length],
-                borderWidth: 1
+                backgroundColor: color.bg + '80',
+                borderColor: color.border,
+                borderWidth: 2,
+                borderRadius: 4,
+                borderSkipped: false,
             });
             colorIndex++;
         });
 
         const ctx = document.getElementById('monthlyWasteChart').getContext('2d');
+        
+        // Hide loading
+        setTimeout(() => {
+            const loading = document.getElementById('chart-loading');
+            if (loading) loading.style.display = 'none';
+        }, 500);
+        
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -128,19 +308,32 @@
             },
             options: {
                 responsive: true,
-                scales: {
-                    x: {
-                        stacked: true,
-                        title: { display: true, text: 'Bulan' }
-                    },
-                    y: {
-                        stacked: true,
-                        beginAtZero: true,
-                        title: { display: true, text: 'Berat (kg)' }
-                    }
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
                 },
                 plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                size: 12,
+                                family: 'Inter'
+                            }
+                        }
+                    },
                     tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#e5e7eb',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: true,
                         callbacks: {
                             label: function(context) {
                                 let label = context.dataset.label || '';
@@ -151,15 +344,93 @@
                                     label += context.parsed.y + ' kg';
                                 }
                                 return label;
+                            },
+                            footer: function(tooltipItems) {
+                                let sum = 0;
+                                tooltipItems.forEach(function(tooltipItem) {
+                                    sum += tooltipItem.parsed.y;
+                                });
+                                return 'Total: ' + sum + ' kg';
                             }
                         }
-                    },
-                    legend: {
-                        display: true,
-                        position: 'top',
                     }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 12,
+                                family: 'Inter'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Bulan',
+                            font: {
+                                size: 14,
+                                family: 'Inter',
+                                weight: 'bold'
+                            },
+                            color: '#374151'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                size: 12,
+                                family: 'Inter'
+                            },
+                            callback: function(value) {
+                                return value + ' kg';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Berat (kg)',
+                            font: {
+                                size: 14,
+                                family: 'Inter',
+                                weight: 'bold'
+                            },
+                            color: '#374151'
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
                 }
             }
+        });
+    });
+    
+    // Add smooth scroll for mobile tables
+    const tables = document.querySelectorAll('.overflow-x-auto');
+    tables.forEach(table => {
+        table.style.scrollBehavior = 'smooth';
+    });
+    
+    // Add loading states for cards
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card-hover');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 150);
         });
     });
 </script>
