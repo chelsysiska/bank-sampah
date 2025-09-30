@@ -13,20 +13,19 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Hitung total pendapatan dan total berat dari tabel laporan
-        // Ini adalah data yang sudah dikonsolidasikan oleh petugas
-        $totalPendapatanSemuaNasabah = Laporan::sum('total_harga');
-        $totalBeratSemuaNasabah = Laporan::sum('total_berat');
+        // PERBAIKAN: Menghitung total pendapatan dan total berat DARI SEMUA SETORAN (ALL-TIME/GRAND TOTAL).
+        // Ini memastikan data di kartu dashboard adalah akumulasi dari semua transaksi granular 
+        // yang dicatat di tabel 'Setoran', bukan hanya dari laporan bulanan yang mungkin belum lengkap.
+        $totalPendapatanSemuaNasabah = Setoran::sum('total_harga');
+        $totalBeratSemuaNasabah = Setoran::sum('berat'); // Menggunakan kolom 'berat' dari tabel setoran
 
-        // Ambil data untuk rekap laporan bulanan dari tabel laporans
-        // Data ini sudah otomatis terkelompokkan per bulan/tahun saat dikirim petugas
+        // Ambil data untuk rekap laporan bulanan dari tabel laporans (data bulanan yang sudah dikonsolidasi)
         $laporans = Laporan::with('petugas')
             ->orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
             ->paginate(10);
             
         // Data untuk grafik bulanan per jenis sampah
-        // Query ini tetap pada tabel Setoran karena ini adalah data riwayat semua setoran
         $grafikBulananData = Setoran::select(
             DB::raw('MONTH(tanggal_setoran) as month'),
             'jenis_sampah_id',

@@ -194,13 +194,13 @@
                 display: none !important;
             }
             
-            .main-content {
+            .main-wrapper {
                 margin-left: 16rem;
                 width: calc(100% - 16rem);
                 transition: all 0.4s ease-in-out;
             }
             
-            .main-content.sidebar-closed {
+            .main-wrapper.sidebar-closed {
                 margin-left: 0;
                 width: 100%;
             }
@@ -260,9 +260,26 @@
             z-index: -1;
             opacity: 0.6;
         }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem 1rem 1rem;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
     </style>
 </head>
-<body class="min-h-screen relative">
+<body class="min-h-screen relative flex flex-col">
     
     <!-- Animated Background -->
     <div class="animated-bg"></div>
@@ -278,12 +295,12 @@
         <!-- Header Section -->
         <div class="gradient-bg p-6 relative overflow-hidden border-b border-white/20">
             <!-- Tombol Toggle untuk Desktop -->
-            <button id="toggle-desktop-btn" class="toggle-desktop absolute top-4 right-4 text-white hover:text-gray-200 transition-colors toggle-btn floating">
+            <button id="toggle-desktop-btn" class="toggle-desktop absolute top-4 right-4 text-white hover:text-gray-200 transition-colors toggle-btn">
                 <i class="fas fa-chevron-left text-lg toggle-icon"></i>
             </button>
             
             <!-- Tombol Close untuk Mobile -->
-            <button id="close-sidebar" class="toggle-mobile absolute top-4 right-4 text-white hover:text-gray-200 transition-colors floating">
+            <button id="close-sidebar" class="toggle-mobile absolute top-4 right-4 text-white hover:text-gray-200 transition-colors">
                 <i class="fas fa-times text-xl"></i>
             </button>
             
@@ -301,43 +318,44 @@
         </div>
         
         <!-- Navigation -->
-        <nav class="mt-8 px-4 h-[calc(100vh-12rem)] overflow-y-auto">
-            <ul class="space-y-3">
+        <nav class="mt-6 px-3 h-[calc(100vh-12rem)] overflow-y-auto">
+            <ul class="space-y-2">
                 <li>
                     <a href="{{ route('nasabah.dashboard') }}" 
-                       class="nav-item flex items-center px-4 py-4 rounded-2xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.dashboard') ? 'bg-green-50 text-green-600 active pulse-glow' : '' }}">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110">
-                            <i class="fas fa-tachometer-alt text-lg {{ request()->routeIs('nasabah.dashboard') ? 'text-green-600' : 'text-green-400 group-hover:text-green-600' }}"></i>
+                        class="nav-item flex items-center px-3 py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.dashboard') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                        <div class="w-9 h-9 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110">
+                        <i class="fas fa-tachometer-alt text-sm {{ request()->routeIs('nasabah.dashboard') ? 'text-green-600' : 'text-green-400 group-hover:text-green-600' }}"></i>
                         </div>
-                        <span class="font-semibold text-lg">Dashboard</span>
-                        <i class="fas fa-chevron-right ml-auto text-gray-300 group-hover:text-green-400 transition-transform group-hover:translate-x-1"></i>
+                        <span class="font-medium text-base">Dashboard</span>
+                        <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-green-400 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('nasabah.riwayat') }}" 
-                       class="nav-item flex items-center px-4 py-4 rounded-2xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.riwayat') ? 'bg-green-50 text-green-600 active pulse-glow' : '' }}">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110">
-                            <i class="fas fa-history text-lg {{ request()->routeIs('nasabah.riwayat') ? 'text-blue-600' : 'text-blue-400 group-hover:text-blue-600' }}"></i>
+                        class="nav-item flex items-center px-3 py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.riwayat') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                        <div class="w-9 h-9 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-history text-sm {{ request()->routeIs('nasabah.riwayat') ? 'text-blue-600' : 'text-blue-400 group-hover:text-blue-600' }}"></i>
                         </div>
-                        <span class="font-semibold text-lg">Riwayat Setoran</span>
-                        <i class="fas fa-chevron-right ml-auto text-gray-300 group-hover:text-blue-400 transition-transform group-hover:translate-x-1"></i>
+                        <span class="font-medium text-base">Riwayat Setoran</span>
+                        <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-blue-400 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </li>
-                <li class="mt-8 pt-6 border-t border-gray-100">
+
+                <li class="mt-6 pt-4 border-t border-gray-100">
                     <a href="{{ route('logout') }}" 
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                       class="nav-item flex items-center px-4 py-4 rounded-2xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group">
-                        <div class="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110">
-                            <i class="fas fa-sign-out-alt text-lg text-red-400 group-hover:text-red-600"></i>
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                        class="nav-item flex items-center px-3 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group">
+                        <div class="w-9 h-9 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-sign-out-alt text-sm text-red-400 group-hover:text-red-600"></i>
                         </div>
-                        <span class="font-semibold text-lg">Logout</span>
-                        <i class="fas fa-chevron-right ml-auto text-gray-300 group-hover:text-red-400 transition-transform group-hover:translate-x-1"></i>
+                        <span class="font-medium text-base">Logout</span>
+                        <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-red-400 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </li>
             </ul>
-        </nav>
-        
-        <!-- Footer -->
+        </nav>  
+        <!-- Footer Sidebar -->
         <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-gray-500 text-sm border-t border-gray-100">
             <p>♻️ Making the World Greener</p>
         </div>
@@ -346,9 +364,11 @@
             @csrf
         </form>
     </aside>
-
+    
+    <!-- Main Wrapper -->
+    <div id="main-wrapper" class="main-wrapper main-content min-h-screen flex flex-col transition-all duration-300">
     <!-- Main Content -->
-    <main id="main-content" class="main-content min-h-screen p-4 md:p-6 transition-all duration-300">
+    <main id="main-content" class="main-content min-h-screen p-4 md:p-6 transition-all duration-300 flex-1">
         <!-- Top Header -->
         <header class="glass-effect rounded-3xl p-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 relative overflow-hidden">
             <!-- Background decoration -->
@@ -357,18 +377,18 @@
             
             <div class="flex items-center space-x-4 w-full md:w-auto relative z-10">
                 <!-- Tombol Toggle Sidebar untuk Mobile -->
-                <button id="toggle-mobile-btn" class="toggle-mobile p-3 rounded-xl bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300 toggle-btn floating">
+                <button id="toggle-mobile-btn" class="toggle-mobile p-3 rounded-xl bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300 toggle-btn">
                     <i class="fas fa-bars text-green-600 text-lg"></i>
                 </button>
                 
                 <!-- Tombol Toggle Sidebar untuk Desktop -->
-                <button id="toggle-desktop-btn-header" class="toggle-desktop p-3 rounded-xl bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300 toggle-btn mr-4 floating">
+                <button id="toggle-desktop-btn-header" class="toggle-desktop p-3 rounded-xl bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300 toggle-btn mr-4">
                     <i class="fas fa-bars text-green-600 text-lg"></i>
                 </button>
                 
                 <div class="min-w-0 flex-1 md:flex-initial">
                     <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center flex-wrap">
-                        <i class="fas fa-leaf text-green-500 mr-3 flex-shrink-0 floating" style="animation-delay: 0.5s;"></i>
+                        <i class="fas fa-leaf text-green-500 mr-3" style="animation-delay: 0.5s;"></i>
                         <span class="break-words bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">@yield('header_title', 'Dashboard Nasabah')</span>
                     </h2>
                     <p class="text-gray-600 mt-2 text-base">@yield('header_subtitle', 'Selamat datang di dashboard nasabah')</p>
@@ -410,12 +430,33 @@
             @yield('content')
         </div>
     </main>
+    <!-- Footer -->
+        <footer class="footer w-full">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-recycle text-xl"></i>
+                        <p class="text-sm">&copy; 2024 Trash2Cash. Semua hak dilindungi. Membuat dunia lebih hijau melalui daur ulang.</p>
+                    </div>
+                    <div class="flex space-x-6 text-sm">
+                        <a href="#" class="hover:underline">Kebijakan Privasi</a>
+                        <a href="#" class="hover:underline">Syarat Layanan</a>
+                        <a href="#" class="hover:underline">Hubungi Kami</a>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/20 flex justify-center items-center space-x-4 text-xs opacity-80">
+                    <i class="fas fa-leaf"></i>
+                    <span>Dukung lingkungan dengan setiap setoran Anda 🌱</span>
+                    <i class="fas fa-leaf"></i>
+                </div>
+            </div>
+        </footer>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
             const backdrop = document.getElementById('backdrop');
-            const mainContent = document.getElementById('main-content');
+            const mainWrapper = document.getElementById('main-wrapper');
             const body = document.body;
 
             // Tombol-tombol toggle
@@ -434,7 +475,7 @@
                     body.classList.add('sidebar-open');
                 } else {
                     sidebar.classList.remove('sidebar-closed');
-                    mainContent.classList.remove('sidebar-closed');
+                    mainWrapper.classList.remove('sidebar-closed');
                 }
                 isSidebarOpen = true;
                 updateToggleIcons();
@@ -447,7 +488,7 @@
                     body.classList.remove('sidebar-open');
                 } else {
                     sidebar.classList.add('sidebar-closed');
-                    mainContent.classList.add('sidebar-closed');
+                    mainWrapper.classList.add('sidebar-closed');
                 }
                 isSidebarOpen = false;
                 updateToggleIcons();

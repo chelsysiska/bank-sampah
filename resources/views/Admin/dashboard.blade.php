@@ -184,7 +184,6 @@
             <span>Grafik Total Berat Sampah per Bulan</span>
         </h3>
     </div>
-    
     <!-- Chart Content -->
     <div class="p-4 md:p-6">
         @if ($grafikBulananData->isEmpty())
@@ -196,19 +195,19 @@
                 </div>
             </div>
         @else
-            <div class="relative">
+            <div class="relative" style="min-height: 420px;">
                 <!-- Chart Loading Placeholder -->
-                <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-gray-50 rounded-lg">
+                <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-gray-50 rounded-lg z-10">
                     <div class="text-center">
                         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                         <p class="text-gray-600">Memuat grafik...</p>
                     </div>
                 </div>
-                
+
                 <!-- Chart Canvas -->
-                <canvas id="monthlyWasteChart" class="w-full max-h-96" style="min-height: 400px;"></canvas>
+                <canvas id="monthlyWasteChart" class="w-full" style="height: 400px;"></canvas>
             </div>
-            
+
             <!-- Chart Legend Info -->
             <div class="mt-6 p-4 bg-gray-50 rounded-lg">
                 <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
@@ -233,33 +232,29 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Fix untuk sidebar toggle yang mungkin konflik
     document.addEventListener('DOMContentLoaded', function () {
-        // Pastikan sidebar dalam state yang benar
-        function checkSidebarState() {
-            const sidebar = document.getElementById('sidebar');
-            const backdrop = document.getElementById('backdrop');
-            
-            if (window.innerWidth >= 768) {
-                sidebar.classList.remove('open');
-                backdrop.classList.add('hidden');
-            }
+        // Pastikan elemen canvas ada
+        const canvas = document.getElementById('monthlyWasteChart');
+        if (!canvas) {
+            console.error('Canvas element not found!');
+            return;
         }
-        
-        checkSidebarState();
-        
-        // Chart code yang sudah ada...
+
+        // Ambil data dari PHP
         const grafikBulananData = @json($grafikBulananData);
         const jenisSampahData = @json($jenisSampahData);
-        
-        // Hide loading if no data
+
+        // Jika tidak ada data, sembunyikan loading dan tampilkan pesan
         if (!grafikBulananData || grafikBulananData.length === 0) {
             const loading = document.getElementById('chart-loading');
             if (loading) loading.style.display = 'none';
             return;
         }
 
+        // Siapkan label bulan
         const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+        // Siapkan datasets
         const datasets = [];
         const colors = [
             { bg: '#4A90E2', border: '#357ABD' },
@@ -271,6 +266,7 @@
         ];
         let colorIndex = 0;
 
+        // Loop jenis sampah
         jenisSampahData.forEach(jenis => {
             const dataPoints = Array(12).fill(0);
             grafikBulananData.forEach(item => {
@@ -292,146 +288,138 @@
             colorIndex++;
         });
 
-        const ctx = document.getElementById('monthlyWasteChart').getContext('2d');
-        
-        // Hide loading
-        setTimeout(() => {
+        // Inisialisasi chart
+        try {
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error('Failed to get 2D context!');
+                return;
+            }
+
+            // Sembunyikan loading setelah 500ms
+            setTimeout(() => {
+                const loading = document.getElementById('chart-loading');
+                if (loading) loading.style.display = 'none';
+            }, 500);
+
+            // Buat chart
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: bulanLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#e5e7eb',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' kg';
+                                    }
+                                    return label;
+                                },
+                                footer: function(tooltipItems) {
+                                    let sum = 0;
+                                    tooltipItems.forEach(function(tooltipItem) {
+                                        sum += tooltipItem.parsed.y;
+                                    });
+                                    return 'Total: ' + sum + ' kg';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Bulan',
+                                font: {
+                                    size: 14,
+                                    family: 'Inter',
+                                    weight: 'bold'
+                                },
+                                color: '#374151'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                },
+                                callback: function(value) {
+                                    return value + ' kg';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Berat (kg)',
+                                font: {
+                                    size: 14,
+                                    family: 'Inter',
+                                    weight: 'bold'
+                                },
+                                color: '#374151'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Chart initialization failed:', error);
             const loading = document.getElementById('chart-loading');
             if (loading) loading.style.display = 'none';
-        }, 500);
-        
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: bulanLabels,
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20,
-                            font: {
-                                size: 12,
-                                family: 'Inter'
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: '#e5e7eb',
-                        borderWidth: 1,
-                        cornerRadius: 8,
-                        displayColors: true,
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    label += context.parsed.y + ' kg';
-                                }
-                                return label;
-                            },
-                            footer: function(tooltipItems) {
-                                let sum = 0;
-                                tooltipItems.forEach(function(tooltipItem) {
-                                    sum += tooltipItem.parsed.y;
-                                });
-                                return 'Total: ' + sum + ' kg';
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        stacked: true,
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                size: 12,
-                                family: 'Inter'
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Bulan',
-                            font: {
-                                size: 14,
-                                family: 'Inter',
-                                weight: 'bold'
-                            },
-                            color: '#374151'
-                        }
-                    },
-                    y: {
-                        stacked: true,
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        },
-                        ticks: {
-                            font: {
-                                size: 12,
-                                family: 'Inter'
-                            },
-                            callback: function(value) {
-                                return value + ' kg';
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Berat (kg)',
-                            font: {
-                                size: 14,
-                                family: 'Inter',
-                                weight: 'bold'
-                            },
-                            color: '#374151'
-                        }
-                    }
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutQuart'
-                }
-            }
-        });
-    });
-    
-    // Add smooth scroll for mobile tables
-    const tables = document.querySelectorAll('.overflow-x-auto');
-    tables.forEach(table => {
-        table.style.scrollBehavior = 'smooth';
-    });
-    
-    // Add loading states for cards
-    document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('.card-hover');
-        cards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 150);
-        });
+        }
     });
 </script>
 @endpush

@@ -15,23 +15,27 @@ class PetugasController extends Controller
 {
     public function dashboard()
     {
-        // Hitung total setoran bulan ini untuk petugas yang login
+        // Hitung total setoran, berat, harga
         $totalSetoran = Setoran::where('petugas_id', Auth::id())->count();
-        
-        // Hitung total berat bulan ini
         $totalBerat = Setoran::where('petugas_id', Auth::id())->sum('berat');
-        
-        // Hitung total harga dari semua setoran bulan ini
         $totalHarga = Setoran::where('petugas_id', Auth::id())->sum('total_harga');
+
+        // Ambil 3 aktivitas terbaru (setoran terakhir)
+        $aktivitas = Setoran::with(['nasabah', 'jenisSampah'])
+            ->where('petugas_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
 
         return view('petugas.dashboard', [
             'totalSetoran' => $totalSetoran,
             'totalBerat' => $totalBerat,
-            'totalHarga' => $totalHarga
+            'totalHarga' => $totalHarga,
+            'aktivitas' => $aktivitas,
         ]);
     }
 
-    // Metode untuk menampilkan form input setoran
+    // Form input setoran
     public function createSetoran()
     {
         $nasabahs = User::where('role', 'nasabah')->get();
@@ -40,7 +44,7 @@ class PetugasController extends Controller
         return view('petugas.setoran.create', compact('nasabahs', 'jenis'));
     }
 
-    // Metode untuk menyimpan data setoran
+    // Simpan data setoran
     public function storeSetoran(Request $request)
     {
         $request->validate([
@@ -53,7 +57,7 @@ class PetugasController extends Controller
         $jenis = JenisSampah::findOrFail($request->jenis_sampah_id);
         $total_harga = $jenis->harga_per_kilo * $request->berat;
 
-        // Simpan data setoran ke database dengan status belum dilaporkan
+        // Simpan data setoran
         Setoran::create([
             'nasabah_id' => $request->nasabah_id,
             'petugas_id' => Auth::id(),
@@ -62,7 +66,7 @@ class PetugasController extends Controller
             'berat' => $request->berat,
             'harga_per_kilo' => $jenis->harga_per_kilo,
             'total_harga' => $total_harga,
-            'is_reported' => false, // Set status awal ke false
+            'is_reported' => false,
         ]);
 
         // Update saldo nasabah
@@ -72,52 +76,49 @@ class PetugasController extends Controller
             $nasabah->save();
         }
 
-        return redirect()->route('petugas.setoran.index')->with('success', 'Setoran berhasil disimpan! Saldo nasabah telah diperbarui.');
+        return redirect()->route('petugas.dashboard')
+            ->with('success', 'Setoran berhasil disimpan! Aktivitas terbaru sudah tercatat.');
     }
 
-    // Metode untuk menampilkan daftar setoran
+    // Daftar setoran
     public function indexSetoran()
     {
         $setorans = Setoran::with(['nasabah', 'jenisSampah'])
-                    ->where('petugas_id', Auth::id())
-                    ->orderBy('tanggal_setoran', 'desc')
-                    ->paginate(20);
+            ->where('petugas_id', Auth::id())
+            ->orderBy('tanggal_setoran', 'desc')
+            ->paginate(20);
 
         return view('petugas.setoran.index', compact('setorans'));
     }
 
-    // Metode untuk mengirim laporan ke admin - PERBAIKAN BESAR
+    // Kirim laporan bulanan ke admin
     public function kirimLaporan(Request $request)
     {
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
-        // Ambil semua setoran yang belum dilaporkan oleh petugas yang login pada bulan BERJALAN
         $setoransBelumDilaporkan = Setoran::where('petugas_id', Auth::id())
             ->where('is_reported', false)
             ->whereMonth('tanggal_setoran', $currentMonth)
             ->whereYear('tanggal_setoran', $currentYear)
             ->get();
-        
-        // Jika tidak ada setoran bulan berjalan yang belum dilaporkan
+
         if ($setoransBelumDilaporkan->isEmpty()) {
-            return back()->with('error', 
-                'Tidak ada setoran bulan ' . Carbon::now()->translatedFormat('F Y') . ' yang belum dilaporkan.');
+            return back()->with('error',
+                'Tidak ada setoran bulan ' . Carbon::now()->translatedFormat('F Y') . ' yang belum dilaporkan.'
+            );
         }
 
-        // Hitung total rekapitulasi dari setoran yang belum dilaporkan
         $jumlahSetoran = $setoransBelumDilaporkan->count();
         $totalBerat = $setoransBelumDilaporkan->sum('berat');
         $totalHarga = $setoransBelumDilaporkan->sum('total_harga');
 
-        // Cek apakah laporan bulanan untuk bulan ini sudah ada
         $laporanSudahDikirim = Laporan::where('bulan', $currentMonth)
             ->where('tahun', $currentYear)
             ->where('petugas_id', Auth::id())
             ->exists();
-        
+
         if ($laporanSudahDikirim) {
-            // Jika sudah ada, update laporan yang ada
             Laporan::where('bulan', $currentMonth)
                 ->where('tahun', $currentYear)
                 ->where('petugas_id', Auth::id())
@@ -127,7 +128,6 @@ class PetugasController extends Controller
                     'total_harga' => $totalHarga,
                 ]);
         } else {
-            // Jika belum ada, buat laporan baru
             Laporan::create([
                 'bulan' => $currentMonth,
                 'tahun' => $currentYear,
@@ -137,16 +137,16 @@ class PetugasController extends Controller
                 'petugas_id' => Auth::id(),
             ]);
         }
-        
-        // Tandai semua setoran bulan berjalan yang baru saja dilaporkan sebagai "sudah dilaporkan"
+
         Setoran::where('petugas_id', Auth::id())
             ->where('is_reported', false)
             ->whereMonth('tanggal_setoran', $currentMonth)
             ->whereYear('tanggal_setoran', $currentYear)
             ->update(['is_reported' => true]);
 
-        return back()->with('success', 
-            'Laporan bulan ' . Carbon::now()->translatedFormat('F Y') . ' berhasil dikirim ke Admin! ' . 
-            $jumlahSetoran . ' setoran telah dilaporkan.');
+        return back()->with('success',
+            'Laporan bulan ' . Carbon::now()->translatedFormat('F Y') . ' berhasil dikirim ke Admin! ' .
+            $jumlahSetoran . ' setoran telah dilaporkan.'
+        );
     }
 }

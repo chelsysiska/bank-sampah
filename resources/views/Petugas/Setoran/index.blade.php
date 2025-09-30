@@ -58,7 +58,7 @@
                         <th class="px-4 py-3">Keterangan</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200">
+                <tbody class="divide-y divide-gray-200 text-gray-900">
                     @forelse($setorans as $index => $setoran)
                         @php
                             $isCurrentMonth = \Carbon\Carbon::parse($setoran->tanggal_setoran)->month == \Carbon\Carbon::now()->month;
@@ -66,11 +66,11 @@
                         @endphp
                         
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3">{{ $setorans->firstItem() + $index }}</td>
-                            <td class="px-4 py-3">{{ \Carbon\Carbon::parse($setoran->tanggal_setoran)->format('d/m/Y') }}</td>
-                            <td class="px-4 py-3">{{ $setoran->nasabah->name }}</td>
-                            <td class="px-4 py-3">{{ $setoran->jenisSampah->nama }}</td>
-                            <td class="px-4 py-3">{{ number_format($setoran->berat, 2) }}</td>
+                            <td class="px-4 py-3 text-gray-900">{{ $setorans->firstItem() + $index }}</td>
+                            <td class="px-4 py-3 text-gray-900">{{ \Carbon\Carbon::parse($setoran->tanggal_setoran)->format('d/m/Y') }}</td>
+                            <td class="px-4 py-3 text-gray-900">{{ $setoran->nasabah->name }}</td>
+                            <td class="px-4 py-3 text-gray-900">{{ $setoran->jenisSampah->nama }}</td>
+                            <td class="px-4 py-3 text-gray-900">{{ number_format($setoran->berat, 2) }}</td>
                             <td class="px-4 py-3 text-green-600 font-semibold">Rp {{ number_format($setoran->total_harga, 0, ',', '.') }}</td>
                             <td class="px-4 py-3">
                                 @if($setoran->is_reported)
@@ -93,7 +93,7 @@
                         </tr>
                     @empty
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 text-center text-gray-500" colspan="8">Belum ada data setoran.</td>
+                            <td class="px-4 py-3 text-center text-gray-800 font-medium" colspan="8">Belum ada data setoran.</td>
                         </tr>
                     @endforelse
                 </tbody>

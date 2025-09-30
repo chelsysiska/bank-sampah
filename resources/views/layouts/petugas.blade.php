@@ -122,6 +122,18 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+
+        @keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34,197,94,0.5);
+    }
+    50% {
+        box-shadow: 0 0 15px 3px rgba(34,197,94,0.4);
+    }
+}
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
     </style>
 </head>
 <body class="bg-gray-50 flex min-h-screen">
@@ -147,76 +159,74 @@
         </div>
 
         <nav class="mt-6 sm:mt-8 px-3 sm:px-4">
-            <ul class="space-y-1">
-                <li>
-                    <a href="{{ route('petugas.dashboard') }}" 
-                        class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 group {{ request()->routeIs('petugas.dashboard') ? 'bg-green-50 text-green-600' : '' }}">
-                        <i class="fas fa-chart-line w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.dashboard') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
-                        <span class="text-sm sm:text-base">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('petugas.setoran.create') }}" 
-                        class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 group {{ request()->routeIs('petugas.setoran.create') ? 'bg-green-50 text-green-600' : '' }}">
-                        <i class="fas fa-plus-circle w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.setoran.create') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
-                        <span class="text-sm sm:text-base">Input Setoran</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('petugas.setoran.index') }}" 
-                        class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 group {{ request()->routeIs('petugas.setoran.index') ? 'bg-green-50 text-green-600' : '' }}">
-                        <i class="fas fa-folder w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.setoran.index') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
-                        <span class="text-sm sm:text-base">Data Setoran</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('petugas.sampah.index') }}" 
-                        class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 group {{ request()->routeIs('petugas.sampah.index') ? 'bg-green-50 text-green-600' : '' }}">
-                        <i class="fas fa-trash-alt w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.sampah.index') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
-                        <span class="text-sm sm:text-base">Kelola Sampah</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('logout') }}" 
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                        class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group">
-                        <i class="fas fa-sign-out-alt w-4 sm:w-5 mr-2 sm:mr-3 text-gray-400 group-hover:text-red-600 transition-transform group-hover:scale-110"></i>
-                        <span class="text-sm sm:text-base">Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <ul class="space-y-1">
+        <li>
+            <a href="{{ route('petugas.dashboard') }}" 
+                class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('petugas.dashboard') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                <i class="fas fa-chart-line w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.dashboard') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
+                <span class="text-sm sm:text-base">Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('petugas.setoran.create') }}" 
+                class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('petugas.setoran.create') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                <i class="fas fa-plus-circle w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.setoran.create') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
+                <span class="text-sm sm:text-base">Input Setoran</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('petugas.setoran.index') }}" 
+                class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('petugas.setoran.index') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                <i class="fas fa-folder w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.setoran.index') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
+                <span class="text-sm sm:text-base">Data Setoran</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('petugas.sampah.index') }}" 
+                class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('petugas.sampah.index') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                <i class="fas fa-trash-alt w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('petugas.sampah.index') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
+                <span class="text-sm sm:text-base">Kelola Sampah</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('logout') }}" 
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group">
+                <i class="fas fa-sign-out-alt w-4 sm:w-5 mr-2 sm:mr-3 text-gray-400 group-hover:text-red-600 transition-transform group-hover:scale-110"></i>
+                <span class="text-sm sm:text-base">Logout</span>
+            </a>
+        </li>
+    </ul>
+</nav>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
             @csrf
         </form>
     </aside>
 
     <main id="main-content" class="flex-1 ml-0 md:ml-64 p-4 sm:p-6 transition-all duration-300 overflow-hidden sm:overflow-auto">
-        <header class="bg-white/80 backdrop-blur-sm shadow-xl rounded-3xl p-4 sm:p-6 mb-4 sm:mb-6 flex justify-between items-center relative border border-white/20">
-            <!-- Desktop Toggle Button (selalu visible di md+) -->
-            <button id="desktop-toggle" class="md:block hidden p-2 rounded-full bg-gray-100 hover:bg-gray-200 toggle-btn absolute left-4 top-1/2 -translate-y-1/2">
-                <i id="toggle-icon" class="fas fa-bars text-gray-600"></i>
-            </button>
-            
-            <div class="ml-0 md:ml-12"> <!-- Adjust margin untuk desktop toggle -->
-                <h2 class="text-xl sm:text-3xl font-bold text-gray-800 flex items-center flex-wrap">
-                    <i class="fas fa-tachometer-alt mr-2 sm:mr-3 text-green-600 animate-spin-slow"></i>
-                    @yield('header_title')
-                </h2>
-                <p class="text-gray-600 mt-1 text-sm sm:text-base">@yield('header_subtitle')</p>
-            </div>
-            <div class="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-end">
-                <div class="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-                    <span class="text-gray-700 font-semibold text-sm sm:text-base text-center sm:text-right">Halo, {{ auth()->user()->name }}</span>
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10B981&color=fff&size=32 sm:size-40" 
-                         alt="Avatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-lg ring-2 ring-green-200 hover:ring-green-300 transition-all">
-                </div>
-                <!-- Dark mode toggle (opsional, hidden di mobile jika tidak perlu) -->
-                <button id="dark-toggle" class="p-2 sm:p-2 rounded-full bg-gray-100 hover:bg-gray-200 hidden sm:block">
-                    <i class="fas fa-moon text-gray-600"></i>
-                </button>
-            </div>
-        </header>
+        <header class="gradient-bg shadow-xl rounded-3xl p-4 sm:p-6 mb-4 sm:mb-6 flex justify-between items-center relative text-white">
+    <button id="desktop-toggle" class="md:block hidden p-2 rounded-full bg-white/20 hover:bg-white/30 toggle-btn absolute left-4 top-1/2 -translate-y-1/2">
+        <i id="toggle-icon" class="fas fa-bars text-white"></i>
+    </button>
+    <div class="ml-0 md:ml-12">
+        <h2 class="text-xl sm:text-3xl font-bold flex items-center flex-wrap">
+            <i class="fas fa-tachometer-alt mr-2 sm:mr-3 animate-spin-slow"></i>
+            @yield('header_title')
+        </h2>
+        <p class="mt-1 text-sm sm:text-base opacity-90">@yield('header_subtitle')</p>
+    </div>
+    <div class="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-end">
+        <div class="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+            <span class="font-semibold text-sm sm:text-base text-center sm:text-right">Halo, {{ auth()->user()->name }}</span>
+            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10B981&color=fff&size=32" 
+                 alt="Avatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-lg ring-2 ring-white/40 hover:ring-white/60 transition-all">
+        </div>
+    </div>
+</header>
 
         @if (session('success'))
             <div class="bg-green-100 border border-green-200 text-green-800 p-3 sm:p-4 mb-4 sm:mb-6 rounded-2xl shadow-md animate-pulse text-sm sm:text-base" role="alert">
@@ -232,6 +242,27 @@
         <div class="overflow-x-auto">
             @yield('content')
         </div>
+
+        <footer class="footer w-full bg-green-600 text-white">
+    <div class="px-6 py-4"> <!-- ganti max-w-7xl mx-auto dengan padding biasa -->
+        <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-recycle text-xl"></i>
+                <p class="text-sm">&copy; 2025 Trash2Cash. Semua hak dilindungi. Membuat dunia lebih hijau melalui daur ulang.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="#" class="hover:underline">Kebijakan Privasi</a>
+                <a href="#" class="hover:underline">Syarat Layanan</a>
+                <a href="#" class="hover:underline">Hubungi Kami</a>
+            </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-white/20 flex justify-center items-center space-x-4 text-xs opacity-80">
+            <i class="fas fa-leaf"></i>
+            <span>Setiap data yang Anda kelola mendukung terciptanya lingkungan lebih hijau 🌱</span>
+            <i class="fas fa-leaf"></i>
+        </div>
+    </div>
+</footer>
     </main>
 
     <script>
