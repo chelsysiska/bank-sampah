@@ -32,7 +32,7 @@
 </div>
 
 <!-- Statistics Cards -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 animate-stagger">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6 animate-stagger">
     <!-- Total Pendapatan Pribadi Card -->
     <div class="card-hover bg-gradient-to-br from-amber-500 to-orange-500 p-6 rounded-2xl shadow-xl relative overflow-hidden group">
         <div class="absolute inset-0 bg-black/10"></div>
@@ -94,6 +94,39 @@
             <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
             <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
             <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+        </div>
+    </div>
+
+    <!-- Total Kas Card -->
+    <div class="card-hover bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl shadow-xl relative overflow-hidden group">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="relative z-10 text-white">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-piggy-bank text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Total Kas</h3>
+                        <p class="opacity-90 text-sm">Kas operasional bank sampah</p>
+                    </div>
+                </div>
+                <i class="fas fa-arrow-right text-lg opacity-60 group-hover:translate-x-2 transition-transform"></i>
+            </div>
+            <p class="text-3xl md:text-4xl font-bold mb-1 text-glow">
+                Rp{{ number_format($totalKas, 0, ',', '.') }}
+            </p>
+            <div class="flex items-center text-xs opacity-90">
+                <i class="fas fa-chart-line mr-1"></i>
+                <span>Kas Operasional</span>
+            </div>
+        </div>
+        
+        <!-- Animated coins -->
+        <div class="absolute bottom-3 right-3 flex space-x-1">
+            <i class="fas fa-coin text-yellow-300 text-sm animate-bounce" style="animation-delay: 0.1s"></i>
+            <i class="fas fa-coin text-yellow-300 text-sm animate-bounce" style="animation-delay: 0.3s"></i>
+            <i class="fas fa-coin text-yellow-300 text-sm animate-bounce" style="animation-delay: 0.5s"></i>
         </div>
     </div>
 </div>

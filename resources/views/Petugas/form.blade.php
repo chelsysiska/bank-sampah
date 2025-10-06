@@ -26,7 +26,7 @@
             <label for="nama" class="block text-gray-700 font-semibold mb-2">Nama Jenis Sampah</label>
             <input type="text" id="nama" name="nama" 
                    value="{{ old('nama', $jenisSampah->nama ?? '') }}"
-                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 @error('nama') border-red-500 @enderror" 
+                   class="w-full px-4 py-2 border text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 @error('nama') border-red-500 @enderror" 
                    required>
             @error('nama')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -38,7 +38,7 @@
             <label for="harga_per_kilo" class="block text-gray-700 font-semibold mb-2">Harga per Kg (Rp)</label>
             <input type="number" id="harga_per_kilo" name="harga_per_kilo" 
                    value="{{ old('harga_per_kilo', $jenisSampah->harga_per_kilo ?? '') }}"
-                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 @error('harga_per_kilo') border-red-500 @enderror" 
+                   class="w-full px-4 py-2 border text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 @error('harga_per_kilo') border-red-500 @enderror" 
                    step="0.01" min="0" required>
             @error('harga_per_kilo')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

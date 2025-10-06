@@ -9,6 +9,40 @@
 @section('content')
     <div class="bg-white shadow-lg rounded-2xl p-6 text-gray-800">
         <h3 class="text-xl font-semibold text-gray-800 mb-4">Riwayat Setoran</h3>
+
+        <div class="mb-6">
+            <form action="{{ route('admin.setoran.index') }}" method="GET" class="flex flex-wrap items-center gap-4">
+                {{-- Pilih Bulan --}}
+                <div>
+                    <label for="bulan" class="block text-sm font-medium text-gray-700">Bulan</label>
+                    <select name="bulan" id="bulan" class="border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                        <option value="">Pilih Bulan</option>
+                        @for ($m = 1; $m <= 12; $m++)
+                        <option value="{{ $m }}" {{ request('bulan') == $m ? 'selected' : '' }}>
+                            {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                        </option>
+                        @endfor
+                    </select>
+                </div>
+
+                {{-- Pilih Tahun --}}
+                <div>
+                    <label for="tahun" class="block text-sm font-medium text-gray-700">Tahun</label>
+                    <select name="tahun" id="tahun" class="border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                        <option value="">Pilih Tahun</option>
+                        @foreach ($availableYears as $yr)
+                        <option value="{{ $yr }}" {{ request('tahun') == $yr ? 'selected' : '' }}>{{ $yr }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="pt-5">
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">
+                        <i class="fas fa-search mr-2"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
         
         {{-- Loop utama ... (sama seperti sebelumnya) --}}
         @forelse($setoransGroupedByMonth as $monthKey => $setoransInMonth)

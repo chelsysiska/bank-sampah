@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Nasabah;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setoran;
-use App\Models\User; // Ditambahkan untuk memastikan model User tersedia
+use App\Models\Kas; // Ditambahkan untuk model Kas
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -23,13 +24,16 @@ class NasabahController extends Controller
         $riwayatSetoran = $nasabah->setoransAsNasabah()
                                   ->with('jenisSampah', 'petugas')
                                   ->orderBy('tanggal_setoran', 'desc')
-                                  ->paginate(5); // Menggunakan paginasi untuk efisiensi
+                                  ->paginate(5);
 
         // Menghitung total pendapatan pribadi nasabah
         $totalPendapatanPribadi = $nasabah->setoransAsNasabah()->sum('total_harga');
 
         // Menghitung total pendapatan dari semua nasabah (untuk perbandingan)
         $totalPendapatanSemuaNasabah = Setoran::sum('total_harga');
+
+        // Menghitung total kas
+        $totalKas = Kas::sum('jumlah');
 
         // Mendapatkan rekapitulasi setoran bulanan
         $bulanan = $nasabah->setoransAsNasabah()
@@ -49,6 +53,7 @@ class NasabahController extends Controller
             'saldo' => $nasabah->saldo,
             'totalPendapatanPribadi' => $totalPendapatanPribadi,
             'totalPendapatanSemuaNasabah' => $totalPendapatanSemuaNasabah,
+            'totalKas' => $totalKas, // Ditambahkan
             'bulanan' => $bulanan,
         ]);
     }
@@ -61,8 +66,18 @@ class NasabahController extends Controller
         $riwayatSetoran = Auth::user()->setoransAsNasabah()
                                      ->with('jenisSampah', 'petugas')
                                      ->orderBy('tanggal_setoran', 'desc')
-                                     ->paginate(10); // Menampilkan 10 item per halaman
+                                     ->paginate(10);
 
         return view('nasabah.riwayat', compact('riwayatSetoran'));
+    }
+
+    /**
+     * Menampilkan halaman riwayat kas untuk nasabah.
+     */
+    public function riwayatKas()
+    {
+        $riwayatKas = Kas::latest()->paginate(10);
+        
+        return view('nasabah.kas.riwayat', compact('riwayatKas'));
     }
 }

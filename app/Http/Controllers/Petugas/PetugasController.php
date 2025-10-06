@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Petugas;
 use App\Http\Controllers\Controller;
 use App\Models\Setoran;
 use App\Models\Laporan;
+use App\Models\Kas;
 use App\Models\User;
 use App\Models\JenisSampah;
 use Illuminate\Http\Request;
@@ -91,62 +92,46 @@ class PetugasController extends Controller
         return view('petugas.setoran.index', compact('setorans'));
     }
 
-    // Kirim laporan bulanan ke admin
-    public function kirimLaporan(Request $request)
-    {
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+    // Kirim laporan ke admin (semua setoran belum dilaporkan)
+public function kirimLaporan(Request $request)
+{
+    $setoransBelumDilaporkan = Setoran::where('petugas_id', Auth::id())
+        ->where('is_reported', false)
+        ->get();
 
-        $setoransBelumDilaporkan = Setoran::where('petugas_id', Auth::id())
-            ->where('is_reported', false)
-            ->whereMonth('tanggal_setoran', $currentMonth)
-            ->whereYear('tanggal_setoran', $currentYear)
-            ->get();
-
-        if ($setoransBelumDilaporkan->isEmpty()) {
-            return back()->with('error',
-                'Tidak ada setoran bulan ' . Carbon::now()->translatedFormat('F Y') . ' yang belum dilaporkan.'
-            );
-        }
-
-        $jumlahSetoran = $setoransBelumDilaporkan->count();
-        $totalBerat = $setoransBelumDilaporkan->sum('berat');
-        $totalHarga = $setoransBelumDilaporkan->sum('total_harga');
-
-        $laporanSudahDikirim = Laporan::where('bulan', $currentMonth)
-            ->where('tahun', $currentYear)
-            ->where('petugas_id', Auth::id())
-            ->exists();
-
-        if ($laporanSudahDikirim) {
-            Laporan::where('bulan', $currentMonth)
-                ->where('tahun', $currentYear)
-                ->where('petugas_id', Auth::id())
-                ->update([
-                    'jumlah_setoran' => $jumlahSetoran,
-                    'total_berat' => $totalBerat,
-                    'total_harga' => $totalHarga,
-                ]);
-        } else {
-            Laporan::create([
-                'bulan' => $currentMonth,
-                'tahun' => $currentYear,
-                'jumlah_setoran' => $jumlahSetoran,
-                'total_berat' => $totalBerat,
-                'total_harga' => $totalHarga,
-                'petugas_id' => Auth::id(),
-            ]);
-        }
-
-        Setoran::where('petugas_id', Auth::id())
-            ->where('is_reported', false)
-            ->whereMonth('tanggal_setoran', $currentMonth)
-            ->whereYear('tanggal_setoran', $currentYear)
-            ->update(['is_reported' => true]);
-
-        return back()->with('success',
-            'Laporan bulan ' . Carbon::now()->translatedFormat('F Y') . ' berhasil dikirim ke Admin! ' .
-            $jumlahSetoran . ' setoran telah dilaporkan.'
-        );
+    if ($setoransBelumDilaporkan->isEmpty()) {
+        return back()->with('error', 'Tidak ada setoran yang belum dilaporkan.');
     }
+
+    $jumlahSetoran = $setoransBelumDilaporkan->count();
+    $totalBerat = $setoransBelumDilaporkan->sum('berat');
+    $totalHarga = $setoransBelumDilaporkan->sum('total_harga');
+
+    // Simpan laporan dengan timestamp sekarang (tanpa filter bulan/tahun setoran)
+    $laporan = Laporan::create([
+        'bulan' => now()->month,   // opsional → tetap simpan bulan kirim
+        'tahun' => now()->year,    // opsional → tetap simpan tahun kirim
+        'jumlah_setoran' => $jumlahSetoran,
+        'total_berat' => $totalBerat,
+        'total_harga' => $totalHarga,
+        'petugas_id' => Auth::id(),
+    ]);
+
+    // Update semua setoran yang baru dilaporkan → is_reported = true
+    Setoran::where('petugas_id', Auth::id())
+        ->where('is_reported', false)
+        ->update(['is_reported' => true]);
+
+    return back()->with('success',
+        'Laporan berhasil dikirim ke Admin! ' . $jumlahSetoran . ' setoran sudah dilaporkan.'
+    );
+}
+
+public function riwayatKas()
+    {
+        $riwayatKas = Kas::latest()->paginate(10);
+        
+        return view('petugas.kas.riwayat', compact('riwayatKas'));
+    }
+
 }

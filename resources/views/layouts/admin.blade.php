@@ -132,6 +132,15 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.kas.riwayat') }}"
+                        class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg
+                        {{ request()->routeIs('admin.kas.riwayat') ? 'bg-gray-300 font-semibold' : '' }}">
+                        <i class="fas fa-wallet mr-2"></i>
+                        <span class="text-sm sm:text-base">Riwayat Kas</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('logout') }}" 
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
                        class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group">

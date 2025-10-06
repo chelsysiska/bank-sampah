@@ -279,7 +279,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen relative flex flex-col">
+<body class="flex flex-col min-h-screen relative">
     
     <!-- Animated Background -->
     <div class="animated-bg"></div>
@@ -339,6 +339,18 @@
                         </div>
                         <span class="font-medium text-base">Riwayat Setoran</span>
                         <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-blue-400 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </li>
+
+                <!-- Menu Riwayat Kas -->
+                <li>
+                    <a href="{{ route('nasabah.kas.riwayat') }}" 
+                        class="nav-item flex items-center px-3 py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('nasabah.kas.*') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
+                        <div class="w-9 h-9 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110">
+                            <i class="fas fa-file-invoice-dollar text-sm {{ request()->routeIs('nasabah.kas.*') ? 'text-purple-600' : 'text-purple-400 group-hover:text-purple-600' }}"></i>
+                        </div>
+                        <span class="font-medium text-base">Riwayat Kas</span>
+                        <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-purple-400 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </li>
 
@@ -451,6 +463,7 @@
                 </div>
             </div>
         </footer>
+    </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {

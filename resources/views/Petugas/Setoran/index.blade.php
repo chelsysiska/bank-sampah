@@ -22,7 +22,7 @@
                     @csrf
                     <button type="submit" 
                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-colors"
-                        onclick="return confirm('Kirim laporan setoran bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }} ke admin?')">
+                        onclick="return confirm('Apakah Anda yakin ingin mengirim laporan setoran ke admin?')">
                         <i class="fas fa-paper-plane mr-2"></i> Kirim Laporan ke Admin
                     </button>
                 </form>
@@ -81,11 +81,7 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if(!$setoran->is_reported)
-                                    @if($isCurrentMonth && $isCurrentYear)
-                                        <span class="text-blue-600"><i class="fas fa-check-circle mr-1"></i>Bisa dilaporkan</span>
-                                    @else
-                                        <span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>Bukan bulan berjalan</span>
-                                    @endif
+                                    <span class="text-blue-600"><i class="fas fa-check-circle mr-1"></i>Bisa dilaporkan</span>
                                 @else
                                     <span class="text-gray-600"><i class="fas fa-check-circle mr-1"></i>Terkirim</span>
                                 @endif

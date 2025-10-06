@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('nasabah')->middleware('role:nasabah')->name('nasabah.')->group(function () {
         Route::get('/dashboard', [NasabahController::class, 'index'])->name('dashboard');
         Route::get('/riwayat', [NasabahController::class, 'riwayat'])->name('riwayat');
+        Route::get('/kas/riwayat', [NasabahController::class, 'riwayatKas'])->name('kas.riwayat'); // Ditambahkan
     });
 
     // Rute untuk Petugas
@@ -49,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
         
         // Rute baru untuk mengirim laporan
         Route::post('/laporan/kirim', [PetugasController::class, 'kirimLaporan'])->name('laporan.kirim');
+
+        Route::get('/kas/riwayat', [PetugasController::class, 'riwayatKas'])->name('kas.riwayat');
     });
 
     // Rute untuk Admin
@@ -57,6 +60,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/setoran', [SetoranAdminController::class, 'index'])->name('setoran.index');
         Route::get('/nasabah', [NasabahAdminController::class, 'index'])->name('nasabah.index');
         Route::get('/nasabah/{nasabah}/kontribusi', [NasabahAdminController::class, 'contribution'])->name('nasabah.contribution');
+
+        // Rute Kas
+        Route::get('/kas/create', [App\Http\Controllers\Admin\KasController::class, 'create'])->name('kas.create');
+        Route::post('/kas', [App\Http\Controllers\Admin\KasController::class, 'store'])->name('kas.store');
+
+        Route::get('/kas/riwayat', [AdminController::class, 'riwayatKas'])->name('kas.riwayat');
     });
 });
 
