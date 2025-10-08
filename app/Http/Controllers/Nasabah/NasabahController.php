@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Nasabah;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setoran;
-use App\Models\Kas; // Ditambahkan untuk model Kas
+use App\Models\Kas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,25 +17,30 @@ class NasabahController extends Controller
      */
     public function index()
     {
-        // Ambil objek user yang sedang login
         $nasabah = Auth::user();
 
-        // Mengambil riwayat setoran pribadi dengan paginasi
+        // Riwayat setoran pribadi
         $riwayatSetoran = $nasabah->setoransAsNasabah()
                                   ->with('jenisSampah', 'petugas')
                                   ->orderBy('tanggal_setoran', 'desc')
                                   ->paginate(5);
 
-        // Menghitung total pendapatan pribadi nasabah
+        // Total pendapatan pribadi
         $totalPendapatanPribadi = $nasabah->setoransAsNasabah()->sum('total_harga');
 
-        // Menghitung total pendapatan dari semua nasabah (untuk perbandingan)
+        // Total pendapatan semua nasabah (komunitas)
         $totalPendapatanSemuaNasabah = Setoran::sum('total_harga');
 
-        // Menghitung total kas
-        $totalKas = Kas::sum('jumlah');
+        /**
+         * 💰 Total kas global (transparan untuk semua pengguna)
+         * Rumus: pendapatan semua nasabah + pemasukan luar - pengeluaran
+         */
+        $totalPendapatanNasabah = Setoran::sum('total_harga');
+        $totalPemasukanLuar = Kas::where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = Kas::where('jenis', 'pengeluaran')->sum('jumlah');
+        $totalKas = $totalPendapatanNasabah + $totalPemasukanLuar - $totalPengeluaran;
 
-        // Mendapatkan rekapitulasi setoran bulanan
+        // Rekap setoran bulanan
         $bulanan = $nasabah->setoransAsNasabah()
                            ->select(
                                DB::raw('MONTH(tanggal_setoran) as bulan'),
@@ -47,19 +52,19 @@ class NasabahController extends Controller
                            ->orderBy('tahun', 'desc')
                            ->orderBy('bulan', 'desc')
                            ->get();
-                           
+
         return view('nasabah.dashboard', [
             'riwayatSetoran' => $riwayatSetoran,
             'saldo' => $nasabah->saldo,
             'totalPendapatanPribadi' => $totalPendapatanPribadi,
             'totalPendapatanSemuaNasabah' => $totalPendapatanSemuaNasabah,
-            'totalKas' => $totalKas, // Ditambahkan
+            'totalKas' => $totalKas, // ✅ Sama dengan admin
             'bulanan' => $bulanan,
         ]);
     }
 
     /**
-     * Menampilkan halaman riwayat setoran nasabah secara terpisah.
+     * Menampilkan halaman riwayat setoran.
      */
     public function riwayat()
     {
@@ -72,12 +77,11 @@ class NasabahController extends Controller
     }
 
     /**
-     * Menampilkan halaman riwayat kas untuk nasabah.
+     * Menampilkan riwayat kas (global, bukan pribadi).
      */
     public function riwayatKas()
     {
         $riwayatKas = Kas::latest()->paginate(10);
-        
         return view('nasabah.kas.riwayat', compact('riwayatKas'));
     }
 }

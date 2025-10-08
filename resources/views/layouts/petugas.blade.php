@@ -106,7 +106,6 @@
             transition: all 0.3s ease;
         }
         .toggle-btn:hover {
-            transform: scale(1.1);
             background: rgba(16, 185, 129, 0.1);
         }
         /* Dark mode (opsional) */
@@ -193,7 +192,7 @@
         </li>
 
         <li>
-            <a href="{{ route('admin.kas.riwayat') }}" 
+            <a href="{{ route('petugas.kas.riwayat') }}" 
                 class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-300 group {{ request()->routeIs('admin.kas.riwayat') ? 'bg-green-50 text-green-600 pulse-glow' : '' }}">
                 <i class="fas fa-wallet w-4 sm:w-5 mr-2 sm:mr-3 {{ request()->routeIs('admin.kas.riwayat') ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600' }} transition-transform group-hover:scale-110"></i>
                 <span class="text-sm sm:text-base">Riwayat Kas</span>

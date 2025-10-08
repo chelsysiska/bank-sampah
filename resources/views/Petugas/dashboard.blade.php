@@ -22,7 +22,8 @@
         @endif
 
         <!-- Statistik Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Total Setoran -->
             <div class="bg-gradient-to-br from-green-400 via-green-500 to-green-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
                 <div class="flex items-center justify-between relative z-10">
                     <div>
@@ -30,12 +31,13 @@
                         <p class="text-4xl font-bold mt-2">{{ $totalSetoran }}</p>
                     </div>
                     <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-boxes text-2xl animate-bounce"></i>
+                        <i class="fas fa-boxes text-2xl"></i> {{-- ❌ Tidak bergerak --}}
                     </div>
                 </div>
                 <p class="text-sm opacity-80 mt-4">Jumlah Semua Setoran</p>
             </div>
 
+            <!-- Total Berat -->
             <div class="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
                 <div class="flex items-center justify-between relative z-10">
                     <div>
@@ -49,10 +51,11 @@
                 <p class="text-sm opacity-80 mt-4">Berat sampah terkumpul</p>
             </div>
 
+            <!-- Total Harga -->
             <div class="bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
                 <div class="flex items-center justify-between relative z-10">
                     <div>
-                        <h3 class="text-lg font-semibold opacity-90">Total Harga</h3>
+                        <h3 class="text-lg font-semibold opacity-90">Pendapatan Semua Nasabah</h3>
                         <p class="text-4xl font-bold mt-2">Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
                     </div>
                     <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
@@ -60,6 +63,20 @@
                     </div>
                 </div>
                 <p class="text-sm opacity-80 mt-4">Nilai ekonomi setoran</p>
+            </div>
+
+            <!-- 🟢 Total Uang Kas -->
+            <div class="bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
+                <div class="flex items-center justify-between relative z-10">
+                    <div>
+                        <h3 class="text-lg font-semibold opacity-90">Total Uang Kas</h3>
+                        <p class="text-4xl font-bold mt-2">Rp{{ number_format($totalKas, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-coins text-2xl"></i> {{-- ❌ Tidak bergerak --}}
+                    </div>
+                </div>
+                <p class="text-sm opacity-80 mt-4">Jumlah uang kas keseluruhan</p>
             </div>
         </div>
 

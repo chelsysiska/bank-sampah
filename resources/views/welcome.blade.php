@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bank Sampah Digital - Beranda</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <title>TRASH2CASH</title>
+    <link rel="icon" type="image/x-icon" href="/path/to/your/favicon.ico">
     <style>
         *, ::after, ::before {
             box-sizing: border-box;
@@ -18,17 +18,18 @@
         }
         
         body {
-            background-color: #f8faf9;
-            color: #2c3e50;
+            background: linear-gradient(to bottom, #f0f9ff 0%, #ffffff 100%);
+            color: #334155;
             overflow-x: hidden;
         }
 
         /* Header */
         .header {
-            background: white;
-            color: #2e7d32;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #0f766e;
             padding: 1.2rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -44,29 +45,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1rem;
         }
         
         .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #4CAF50, #66bb6a);
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
         }
         
         .logo h1 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #2e7d32;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .nav {
@@ -76,16 +82,16 @@
         }
         
         .nav a {
-            color: #555;
+            color: #64748b;
             text-decoration: none;
             font-weight: 500;
             position: relative;
             padding: 0.5rem 0;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .nav a:hover {
-            color: #2e7d32;
+            color: #0f766e;
         }
         
         .nav a::after {
@@ -94,9 +100,10 @@
             bottom: 0;
             left: 0;
             width: 0;
-            height: 2px;
-            background: #4CAF50;
+            height: 3px;
+            background: linear-gradient(90deg, #14b8a6, #06b6d4);
             transition: width 0.3s ease;
+            border-radius: 2px;
         }
         
         .nav a:hover::after {
@@ -107,15 +114,14 @@
         .auth-buttons {
             display: flex;
             gap: 1rem;
-            margin-left: 2rem;
         }
         
         .btn-login {
-            padding: 0.6rem 1.8rem;
+            padding: 0.7rem 2rem;
             background: white;
-            color: #2e7d32;
-            border: 2px solid #2e7d32;
-            border-radius: 8px;
+            color: #0f766e;
+            border: 2px solid #14b8a6;
+            border-radius: 12px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -123,33 +129,34 @@
         }
         
         .btn-login:hover {
-            background: #2e7d32;
-            color: white;
+            background: #f0fdfa;
+            border-color: #0f766e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
         }
         
         .btn-register {
-            padding: 0.6rem 1.8rem;
-            background: #4CAF50;
+            padding: 0.7rem 2rem;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
             color: white;
-            border: 2px solid #4CAF50;
-            border-radius: 8px;
+            border: 2px solid transparent;
+            border-radius: 12px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
             font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
         }
         
         .btn-register:hover {
-            background: #388e3c;
-            border-color: #388e3c;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #4CAF50 0%, #66bb6a 100%);
-            padding: 5rem 0;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #06b6d4 100%);
+            padding: 6rem 0;
             color: white;
             text-align: center;
             position: relative;
@@ -159,12 +166,30 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="rgba(255,255,255,0.1)" d="M0,40 Q300,80 600,40 T1200,40 L1200,0 L0,0 Z"/></svg>') repeat-x;
-            opacity: 0.3;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
         }
         
         .hero-content {
@@ -173,36 +198,38 @@
         }
         
         .hero h2 {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
             line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             max-width: 700px;
             margin: 0 auto 2.5rem;
-            line-height: 1.7;
+            line-height: 1.8;
             opacity: 0.95;
         }
         
         .cta-button {
             display: inline-block;
-            padding: 1rem 3rem;
+            padding: 1.1rem 3.5rem;
             background: white;
-            color: #2e7d32;
+            color: #0f766e;
             border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
             font-size: 1.1rem;
         }
         
         .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: #f0fdfa;
         }
 
         /* Section */
@@ -216,40 +243,44 @@
         }
         
         .section-title h2 {
-            font-size: 2.5rem;
-            color: #2e7d32;
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
             font-weight: 700;
         }
         
         .section-subtitle {
             text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
+            color: #64748b;
+            font-size: 1.15rem;
+            margin-bottom: 3.5rem;
         }
         
         .content-box {
             background: white;
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
+            border: 1px solid rgba(20, 184, 166, 0.1);
         }
         
         h3 {
-            color: #2e7d32;
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
+            color: #0f766e;
+            margin-bottom: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7rem;
         }
         
         p {
-            line-height: 1.8;
-            color: #555;
+            line-height: 1.9;
+            color: #475569;
             margin-bottom: 1.5rem;
         }
 
@@ -263,66 +294,87 @@
         
         .card {
             background: white;
-            padding: 2.5rem;
-            border-radius: 16px;
+            padding: 2.8rem;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(20, 184, 166, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #14b8a6, #06b6d4);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
         }
         
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.15);
-            border-color: #4CAF50;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(20, 184, 166, 0.2);
         }
         
         .card-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ccfbf1, #a5f3fc);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin: 0 auto 1.5rem;
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
         }
         
         .card:hover .card-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
         }
         
         .card h3 {
-            color: #2e7d32;
-            font-size: 1.3rem;
+            color: #0f766e;
+            font-size: 1.35rem;
             margin-bottom: 1rem;
             justify-content: center;
         }
         
         .card p {
-            color: #666;
+            color: #64748b;
             font-size: 1rem;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         /* Info Box */
         .info-box {
-            background: linear-gradient(135deg, #f1f8f4, #e8f5e9);
-            padding: 2rem;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            padding: 2.5rem;
+            border-radius: 16px;
             margin: 2rem 0;
-            border-left: 4px solid #4CAF50;
+            border-left: 5px solid #14b8a6;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.1);
         }
         
         .info-box p {
             margin: 0;
-            line-height: 2;
+            line-height: 2.2;
+            color: #0f766e;
         }
         
         .info-box strong {
-            color: #1b5e20;
+            color: #0e7490;
             font-weight: 600;
         }
 
@@ -330,48 +382,63 @@
         .list-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            gap: 1.2rem;
             margin: 2rem 0;
         }
         
         .list-item {
-            padding: 1.2rem 1.5rem;
+            padding: 1.4rem 1.8rem;
             background: white;
-            border-radius: 10px;
-            border-left: 4px solid #4CAF50;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 14px;
+            border-left: 4px solid #14b8a6;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 1rem;
+            color: #475569;
         }
         
         .list-item:hover {
-            background: #f1f8f4;
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #ecfeff, #ffffff);
+            transform: translateX(8px);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.15);
         }
         
         .list-item::before {
             content: '✓';
             color: white;
-            background: #4CAF50;
-            width: 28px;
-            height: 28px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(20, 184, 166, 0.3);
         }
 
         /* Stats Section */
         .stats {
-            background: linear-gradient(135deg, #2e7d32, #4CAF50);
-            padding: 4rem 0;
-            margin: 4rem 0;
+            background: linear-gradient(135deg, #0f766e, #14b8a6, #06b6d4);
+            padding: 5rem 0;
+            margin: 5rem 0;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
         
         .stats-grid {
@@ -379,24 +446,27 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 3rem;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         
         .stat-item h4 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .stat-item p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1.15rem;
+            opacity: 0.95;
             color: white;
         }
 
         /* Footer */
         .footer {
-            background: #1a1a1a;
-            color: #ccc;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #cbd5e1;
             padding: 3rem 0 1.5rem;
             margin-top: 5rem;
         }
@@ -407,11 +477,11 @@
         
         .footer p {
             margin: 0.5rem 0;
-            color: #ccc;
+            color: #cbd5e1;
         }
         
         .footer .version {
-            color: #666;
+            color: #64748b;
             font-size: 0.85rem;
             margin-top: 1.5rem;
         }
@@ -434,7 +504,7 @@
             }
             
             .hero h2 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .hero p {
@@ -442,7 +512,7 @@
             }
             
             .section-title h2 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .grid-3 {
@@ -463,14 +533,14 @@
                 <h1>Bank Sampah Digital</h1>
             </div>
             <nav class="nav">
-                <a href="home">Beranda</a>
-                <a href="about">Tentang Kami</a>
-                <a href="profile">Profil</a>
-                <div class="auth-buttons">
-                    <a href="{{ route('login') }}" class="btn-login">Log in</a>
-                    <a href="{{ route('register') }}" class="btn-register">Register</a>
-                </div>
+                <a href="#home">Beranda</a>
+                <a href="#about">Tentang Kami</a>
+                <a href="#profile">Profil</a>
             </nav>
+            <div class="auth-buttons">
+                <a href="{{ route('login') }}" class="btn-login">Log in</a>
+                <a href="{{ route('register') }}" class="btn-register">Register</a>
+            </div>
         </div>
     </header>
 
@@ -478,7 +548,7 @@
         <div class="container hero-content">
             <h2>Wujudkan Lingkungan Bersih & Berkelanjutan</h2>
             <p>Platform inovatif untuk mengelola sampah dengan cara modern. Tukarkan sampah Anda menjadi nilai ekonomi dan bantu selamatkan bumi!</p>
-            <a href="home" class="cta-button">Mulai Sekarang →</a>
+            <a href="{{ route('login') }}" class="cta-button">Mulai Sekarang →</a>
         </div>
     </section>
 
@@ -536,7 +606,7 @@
                     <div class="list-item">Minyak Jelantah (Kemasan tertutup)</div>
                 </div>
 
-                <p style="text-align: center; margin-top: 2rem; font-style: italic; color: #2e7d32; font-size: 1.05rem;">
+                <p style="text-align: center; margin-top: 2rem; font-style: italic; color: #0f766e; font-size: 1.05rem;">
                     ✨ Sistem pencatatan digital kami memastikan setiap transaksi tercatat dengan akurat dan transparan
                 </p>
             </div>
@@ -548,7 +618,6 @@
             <p>&copy; 2025 Bank Sampah Digital. Semua Hak Dilindungi.</p>
             <p>Bersama Menuju Masa Depan yang Lebih Hijau 🌱</p>
             <p class="version">Didukung oleh Laravel & PHP</p>
-        </div>
-    </footer>
+        </footer>
 </body>
 </html>

@@ -30,8 +30,8 @@
                         @foreach($riwayatKas as $kas)
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-                                    {{ $kas->created_at->format('d M Y H:i') }}
-                                </td>
+    {{ $kas->created_at->timezone('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
+</td>
                                 <td class="px-4 py-3">
                                     @if($kas->jenis === 'pemasukan')
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">

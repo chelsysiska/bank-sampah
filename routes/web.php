@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/setoran', [PetugasController::class, 'indexSetoran'])->name('setoran.index');
         Route::get('/setoran/create', [PetugasController::class, 'createSetoran'])->name('setoran.create');
         Route::post('/setoran', [PetugasController::class, 'storeSetoran'])->name('setoran.store');
+        Route::delete('/setoran/{id}', [PetugasController::class, 'destroySetoran'])->name('setoran.destroy'); 
 
         // Rute untuk Kelola Sampah (CRUD) menggunakan Route::resource
         Route::resource('sampah', KelolaSampahController::class)->except(['show']);

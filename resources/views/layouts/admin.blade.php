@@ -75,7 +75,6 @@
             transition: all 0.3s ease;
         }
         .toggle-btn:hover {
-            transform: scale(1.1);
             background: rgba(16, 185, 129, 0.1);
         }
         @media (prefers-color-scheme: dark) {

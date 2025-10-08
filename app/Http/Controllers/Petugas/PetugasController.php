@@ -16,10 +16,16 @@ class PetugasController extends Controller
 {
     public function dashboard()
     {
-        // Hitung total setoran, berat, harga
+        // Hitung total setoran, berat, harga (khusus petugas ini)
         $totalSetoran = Setoran::where('petugas_id', Auth::id())->count();
         $totalBerat = Setoran::where('petugas_id', Auth::id())->sum('berat');
         $totalHarga = Setoran::where('petugas_id', Auth::id())->sum('total_harga');
+
+        // 💰 Hitung total kas global (sama dengan admin & nasabah)
+        $totalPendapatanNasabah = Setoran::sum('total_harga');
+        $totalPemasukanLuar = Kas::where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = Kas::where('jenis', 'pengeluaran')->sum('jumlah');
+        $totalKas = $totalPendapatanNasabah + $totalPemasukanLuar - $totalPengeluaran;
 
         // Ambil 3 aktivitas terbaru (setoran terakhir)
         $aktivitas = Setoran::with(['nasabah', 'jenisSampah'])
@@ -33,6 +39,7 @@ class PetugasController extends Controller
             'totalBerat' => $totalBerat,
             'totalHarga' => $totalHarga,
             'aktivitas' => $aktivitas,
+            'totalKas' => $totalKas, // ✅ tampilkan kas global
         ]);
     }
 
@@ -54,6 +61,13 @@ class PetugasController extends Controller
             'jenis_sampah_id' => 'required|exists:jenis_sampahs,id',
             'berat' => 'required|numeric|min:0.01',
         ]);
+
+        // ✅ Validasi tambahan: tanggal tidak boleh di masa depan
+        $tanggalSetoran = Carbon::parse($request->tanggal_setoran);
+        if ($tanggalSetoran->isAfter(Carbon::today())) {
+            return back()->with('error', 'Tanggal setoran tidak boleh lebih dari hari ini!')
+                         ->withInput();
+        }
 
         $jenis = JenisSampah::findOrFail($request->jenis_sampah_id);
         $total_harga = $jenis->harga_per_kilo * $request->berat;
@@ -92,46 +106,88 @@ class PetugasController extends Controller
         return view('petugas.setoran.index', compact('setorans'));
     }
 
-    // Kirim laporan ke admin (semua setoran belum dilaporkan)
-public function kirimLaporan(Request $request)
+    // Hapus setoran
+public function destroySetoran($id)
 {
-    $setoransBelumDilaporkan = Setoran::where('petugas_id', Auth::id())
-        ->where('is_reported', false)
-        ->get();
+    $setoran = Setoran::where('id', $id)
+        ->where('petugas_id', Auth::id()) // hanya boleh hapus setoran miliknya
+        ->firstOrFail();
 
-    if ($setoransBelumDilaporkan->isEmpty()) {
-        return back()->with('error', 'Tidak ada setoran yang belum dilaporkan.');
+    // Cegah hapus jika sudah dilaporkan
+    if ($setoran->is_reported) {
+        return back()->with('error', 'Setoran yang sudah dilaporkan tidak bisa dihapus.');
     }
 
-    $jumlahSetoran = $setoransBelumDilaporkan->count();
-    $totalBerat = $setoransBelumDilaporkan->sum('berat');
-    $totalHarga = $setoransBelumDilaporkan->sum('total_harga');
+    // Kembalikan saldo nasabah
+    $nasabah = $setoran->nasabah;
+    if ($nasabah) {
+        $nasabah->saldo -= $setoran->total_harga;
+        if ($nasabah->saldo < 0) $nasabah->saldo = 0; // jaga-jaga biar tidak minus
+        $nasabah->save();
+    }
 
-    // Simpan laporan dengan timestamp sekarang (tanpa filter bulan/tahun setoran)
-    $laporan = Laporan::create([
-        'bulan' => now()->month,   // opsional → tetap simpan bulan kirim
-        'tahun' => now()->year,    // opsional → tetap simpan tahun kirim
-        'jumlah_setoran' => $jumlahSetoran,
-        'total_berat' => $totalBerat,
-        'total_harga' => $totalHarga,
-        'petugas_id' => Auth::id(),
-    ]);
+    $setoran->delete();
 
-    // Update semua setoran yang baru dilaporkan → is_reported = true
-    Setoran::where('petugas_id', Auth::id())
-        ->where('is_reported', false)
-        ->update(['is_reported' => true]);
-
-    return back()->with('success',
-        'Laporan berhasil dikirim ke Admin! ' . $jumlahSetoran . ' setoran sudah dilaporkan.'
-    );
+    return back()->with('success', 'Setoran berhasil dihapus.');
 }
 
-public function riwayatKas()
+
+    // Kirim laporan ke admin (semua setoran belum dilaporkan)
+    public function kirimLaporan(Request $request)
     {
-        $riwayatKas = Kas::latest()->paginate(10);
-        
-        return view('petugas.kas.riwayat', compact('riwayatKas'));
+        $setoransBelumDilaporkan = Setoran::where('petugas_id', Auth::id())
+            ->where('is_reported', false)
+            ->get();
+
+        if ($setoransBelumDilaporkan->isEmpty()) {
+            return back()->with('error', 'Tidak ada setoran yang belum dilaporkan.');
+        }
+
+        $jumlahSetoran = $setoransBelumDilaporkan->count();
+        $totalBerat = $setoransBelumDilaporkan->sum('berat');
+        $totalHarga = $setoransBelumDilaporkan->sum('total_harga');
+
+        // Simpan laporan dengan timestamp sekarang
+        $laporan = Laporan::create([
+            'bulan' => now()->month,
+            'tahun' => now()->year,
+            'jumlah_setoran' => $jumlahSetoran,
+            'total_berat' => $totalBerat,
+            'total_harga' => $totalHarga,
+            'petugas_id' => Auth::id(),
+        ]);
+
+        // ✅ Tambahkan otomatis pemasukan kas bank sampah
+        Kas::create([
+            'jenis' => 'pemasukan',
+            'jumlah' => $totalHarga,
+            'keterangan' => 'Dari Bank Sampah',
+            'dokumentasi' => null, // bisa diisi kalau mau upload bukti
+        ]);
+
+        // Update semua setoran yang baru dilaporkan → is_reported = true
+        Setoran::where('petugas_id', Auth::id())
+            ->where('is_reported', false)
+            ->update(['is_reported' => true]);
+
+        return back()->with('success',
+            'Laporan berhasil dikirim ke Admin! ' . $jumlahSetoran . ' setoran sudah dilaporkan dan tercatat sebagai pemasukan kas bank sampah.'
+        );
     }
 
+    public function riwayatKas()
+    {
+        $riwayatKas = Kas::latest()->paginate(10);
+
+        // 💰 Tambahkan juga total kas global di halaman kas petugas
+        $totalPendapatanNasabah = Setoran::sum('total_harga');
+        $totalPemasukanLuar = Kas::where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = Kas::where('jenis', 'pengeluaran')->sum('jumlah');
+        $totalKas = $totalPendapatanNasabah + $totalPemasukanLuar - $totalPengeluaran;
+
+        return view('petugas.kas.riwayat', [
+            'riwayatKas' => $riwayatKas,
+            'totalKas' => $totalKas, // ✅ tampilkan kas global di halaman kas
+        ]);
+    }
 }

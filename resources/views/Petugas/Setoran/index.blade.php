@@ -56,15 +56,11 @@
                         <th class="px-4 py-3">Total Harga</th>
                         <th class="px-4 py-3">Status</th>
                         <th class="px-4 py-3">Keterangan</th>
+                        <th class="px-4 py-3">Aksi</th> {{-- ✅ kolom aksi --}}
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 text-gray-900">
                     @forelse($setorans as $index => $setoran)
-                        @php
-                            $isCurrentMonth = \Carbon\Carbon::parse($setoran->tanggal_setoran)->month == \Carbon\Carbon::now()->month;
-                            $isCurrentYear = \Carbon\Carbon::parse($setoran->tanggal_setoran)->year == \Carbon\Carbon::now()->year;
-                        @endphp
-                        
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 text-gray-900">{{ $setorans->firstItem() + $index }}</td>
                             <td class="px-4 py-3 text-gray-900">{{ \Carbon\Carbon::parse($setoran->tanggal_setoran)->format('d/m/Y') }}</td>
@@ -86,10 +82,23 @@
                                     <span class="text-gray-600"><i class="fas fa-check-circle mr-1"></i>Terkirim</span>
                                 @endif
                             </td>
+                            <td class="px-4 py-3 text-sm">
+                                @if(!$setoran->is_reported)
+                                    <form action="{{ route('petugas.setoran.destroy', $setoran->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus setoran ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
+                                            <i class="fas fa-trash mr-1"></i> Hapus
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-400 italic">-</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 text-center text-gray-800 font-medium" colspan="8">Belum ada data setoran.</td>
+                            <td class="px-4 py-3 text-center text-gray-800 font-medium" colspan="9">Belum ada data setoran.</td>
                         </tr>
                     @endforelse
                 </tbody>

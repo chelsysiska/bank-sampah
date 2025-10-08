@@ -17,32 +17,35 @@ class AuthenticatedSessionController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'login' => 'required|string', // bisa NIK atau email
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'login' => 'required|string', // bisa NIK atau email
+        'password' => 'required|string',
+    ]);
 
-        $login = $request->input('login');
-        $password = $request->input('password');
+    $login = $request->input('login');
+    $password = $request->input('password');
 
-        // cari user berdasarkan NIK atau Email
-        $user = User::where('nik', $login)
-                    ->orWhere('email', $login)
-                    ->first();
+    // cari user berdasarkan NIK atau Email
+    $user = \App\Models\User::where('nik', $login)
+                ->orWhere('email', $login)
+                ->first();
 
-        if (! $user || ! Hash::check($password, $user->password)) {
-            throw ValidationException::withMessages([
-                'login' => __('auth.failed'),
-            ]);
-        }
-
-        Auth::login($user, $request->boolean('remember'));
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard'));
+    // jika user tidak ditemukan atau password salah
+    if (!$user || !\Hash::check($password, $user->password)) {
+        return back()->withErrors([
+            'login' => 'Email dan password salah.',
+        ])->onlyInput('login');
     }
+
+    // login user
+    \Auth::login($user, $request->boolean('remember'));
+
+    $request->session()->regenerate();
+
+    return redirect()->intended(route('dashboard'));
+}
+
 
     public function destroy(Request $request)
     {

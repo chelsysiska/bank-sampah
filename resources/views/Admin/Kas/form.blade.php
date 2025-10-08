@@ -13,15 +13,17 @@
         <input type="hidden" name="jenis" value="{{ $jenis }}">
 
         <div class="mb-6">
-            <label class="block text-gray-800 font-medium mb-2">
-                {{ $jenis === 'pemasukan' ? 'Jumlah Pemasukan' : 'Jumlah Pengeluaran' }} (Rp)
-            </label>
-            <input type="number" name="jumlah" value="{{ old('jumlah') }}" 
-                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
-                   style="color: #1f2937;"
-                   placeholder="Contoh: 50000" required>
-            @error('jumlah')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-        </div>
+    <label class="block text-gray-800 font-medium mb-2">
+        {{ $jenis === 'pemasukan' ? 'Jumlah Pemasukan' : 'Jumlah Pengeluaran' }} (Rp)
+    </label>
+    <input type="number" name="jumlah" value="{{ old('jumlah') }}" 
+           step="1000" min="1000"
+           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
+           style="color: #1f2937;"
+           placeholder="Contoh: 50000" required>
+    @error('jumlah')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+</div>
+
 
         <div class="mb-6">
             <label class="block text-gray-800 font-medium mb-2">Keterangan</label>
@@ -33,7 +35,7 @@
         </div>
 
         <div class="mb-6">
-    <label class="block text-gray-800 font-medium mb-2">Dokumentasi (Foto Bukti)</label>
+            <label class="block text-gray-800 font-medium mb-2">Dokumentasi (Foto Bukti)</label>
     <input type="file" name="dokumentasi" accept="image/*"
            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
            required> {{-- ✅ wajib diisi --}}
