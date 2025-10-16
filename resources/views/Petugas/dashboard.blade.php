@@ -34,7 +34,7 @@
                         <i class="fas fa-boxes text-2xl"></i> {{-- ❌ Tidak bergerak --}}
                     </div>
                 </div>
-                <p class="text-sm opacity-80 mt-4">Jumlah Semua Setoran</p>
+                <p class="text-sm opacity-80 mt-4">Jumlah Setoran Bulan Ini</p>
             </div>
 
             <!-- Total Berat -->

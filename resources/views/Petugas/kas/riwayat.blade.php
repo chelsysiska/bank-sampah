@@ -14,6 +14,49 @@
     </div>
     
     <div class="p-4 md:p-6">
+
+        <!-- 🔍 Filter Bulan & Tahun -->
+        <form method="GET" action="{{ route('petugas.kas.riwayat') }}" 
+            class="mb-6 flex flex-wrap items-end gap-4 bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md">
+
+            <div>
+                <label for="bulan" class="block text-sm font-semibold text-gray-800">Bulan</label>
+                <select name="bulan" id="bulan" 
+                    class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white px-3 py-2">
+                    <option value="">Semua</option>
+                    @foreach(range(1, 12) as $b)
+                        <option value="{{ $b }}" {{ request('bulan') == $b ? 'selected' : '' }}>
+                            {{ \Carbon\Carbon::create()->month($b)->translatedFormat('F') }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label for="tahun" class="block text-sm font-semibold text-gray-800">Tahun</label>
+                <select name="tahun" id="tahun" 
+                    class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white px-3 py-2">
+                    <option value="">Semua</option>
+                    @foreach(range(date('Y'), date('Y') - 5) as $t)
+                        <option value="{{ $t }}" {{ request('tahun') == $t ? 'selected' : '' }}>
+                            {{ $t }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex gap-2 items-center">
+                <button type="submit"
+                    class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition shadow-sm">
+                    <i class="fas fa-search mr-1"></i> Filter
+                </button>
+                <a href="{{ route('petugas.kas.riwayat') }}"
+                    class="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition shadow-sm">
+                    <i class="fas fa-undo mr-1"></i> Reset
+                </a>
+            </div>
+        </form>
+
         @if($riwayatKas->isNotEmpty())
             <div class="overflow-x-auto -mx-2">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -30,8 +73,8 @@
                         @foreach($riwayatKas as $kas)
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-    {{ $kas->created_at->timezone('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
-</td>
+                                    {{ $kas->created_at->timezone('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
+                                </td>
                                 <td class="px-4 py-3">
                                     @if($kas->jenis === 'pemasukan')
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -75,4 +118,25 @@
         @endif
     </div>
 </div>
+
+<!-- ✅ Tambahkan Tom Select agar dropdown muncul di luar container -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    new TomSelect('#bulan', {
+        dropdownParent: 'body',
+        dropdownDirection: 'down',
+        openOnFocus: true,
+        positionDropdown: true,
+    });
+    new TomSelect('#tahun', {
+        dropdownParent: 'body',
+        dropdownDirection: 'down',
+        openOnFocus: true,
+        positionDropdown: true,
+    });
+});
+</script>
 @endsection

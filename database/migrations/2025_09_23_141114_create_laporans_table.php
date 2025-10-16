@@ -16,6 +16,7 @@ return new class extends Migration
             $table->decimal('total_berat', 10, 2);
             $table->decimal('total_harga', 10, 2);
             $table->foreignId('petugas_id')->constrained('users');
+             $table->string('bukti')->nullable();
             $table->timestamps();
         });
     }

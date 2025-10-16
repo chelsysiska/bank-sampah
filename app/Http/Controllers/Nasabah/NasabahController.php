@@ -66,22 +66,51 @@ class NasabahController extends Controller
     /**
      * Menampilkan halaman riwayat setoran.
      */
-    public function riwayat()
-    {
-        $riwayatSetoran = Auth::user()->setoransAsNasabah()
-                                     ->with('jenisSampah', 'petugas')
-                                     ->orderBy('tanggal_setoran', 'desc')
-                                     ->paginate(10);
+    public function riwayat(Request $request)
+{
+    $query = Auth::user()->setoransAsNasabah()
+                         ->with('jenisSampah', 'petugas')
+                         ->orderBy('tanggal_setoran', 'desc');
 
-        return view('nasabah.riwayat', compact('riwayatSetoran'));
+    // ✅ Filter berdasarkan bulan dan tahun
+    if ($request->filled('bulan')) {
+        $query->whereMonth('tanggal_setoran', $request->bulan);
     }
+
+    if ($request->filled('tahun')) {
+        $query->whereYear('tanggal_setoran', $request->tahun);
+    }
+
+    $riwayatSetoran = $query->paginate(10);
+
+    // Kirim data bulan dan tahun ke view
+    return view('nasabah.riwayat', [
+        'riwayatSetoran' => $riwayatSetoran,
+        'bulan' => $request->bulan,
+        'tahun' => $request->tahun,
+    ]);
+}
 
     /**
      * Menampilkan riwayat kas (global, bukan pribadi).
      */
-    public function riwayatKas()
-    {
-        $riwayatKas = Kas::latest()->paginate(10);
-        return view('nasabah.kas.riwayat', compact('riwayatKas'));
+    public function riwayatKas(Request $request)
+{
+    $query = Kas::query();
+
+    // ✅ Filter berdasarkan bulan
+    if ($request->filled('bulan')) {
+        $query->whereMonth('created_at', $request->bulan);
     }
+
+    // ✅ Filter berdasarkan tahun
+    if ($request->filled('tahun')) {
+        $query->whereYear('created_at', $request->tahun);
+    }
+
+    $riwayatKas = $query->latest()->paginate(10);
+
+    return view('nasabah.kas.riwayat', compact('riwayatKas'));
+}
+
 }

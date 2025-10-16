@@ -282,163 +282,101 @@
     const mobileBackdrop = document.getElementById('mobile-backdrop');
     const toggleIcon = document.getElementById('toggle-icon');
 
-    let isSidebarOpen = false;
+    let isSidebarOpen = true; // default terbuka di desktop
     let isMobile = window.innerWidth < 768;
 
-    // Fungsi Unified Toggle (lanjutan)
-    function toggleSidebar() {
-        isSidebarOpen = !isSidebarOpen;
-        
-        if (isSidebarOpen) {
-            // Buka Sidebar
-            sidebar.classList.remove('-translate-x-full', 'collapsed');
-            if (isMobile) {
-                mobileBackdrop.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            } else {
-                mainContent.classList.remove('md:ml-0');
-                mainContent.classList.add('md:ml-64');
-                toggleIcon.classList.remove('fa-bars');
-                toggleIcon.classList.add('fa-chevron-left');
-            }
+    // Fungsi buka sidebar
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full', 'collapsed');
+        if (isMobile) {
+            mobileBackdrop.classList.add('active');
+            document.body.style.overflow = 'hidden';
         } else {
-            // Tutup Sidebar
-            if (isMobile) {
-                sidebar.classList.add('-translate-x-full');
-                mobileBackdrop.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.remove('md:ml-64');
-                mainContent.classList.add('md:ml-0');
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-bars');
-            }
+            mainContent.classList.remove('md:ml-0');
+            mainContent.classList.add('md:ml-64');
+            toggleIcon.classList.remove('fa-bars');
+            toggleIcon.classList.add('fa-chevron-left');
+        }
+        isSidebarOpen = true;
+    }
+
+    // Fungsi tutup sidebar
+    function closeSidebar() {
+        if (isMobile) {
+            sidebar.classList.add('-translate-x-full');
+            mobileBackdrop.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.remove('md:ml-64');
+            mainContent.classList.add('md:ml-0');
+            toggleIcon.classList.remove('fa-chevron-left');
+            toggleIcon.classList.add('fa-bars');
+        }
+        isSidebarOpen = false;
+    }
+
+    // Fungsi toggle sidebar (buka/tutup)
+    function toggleSidebar() {
+        if (isSidebarOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
         }
     }
 
-    // Fungsi untuk Update State Berdasarkan Ukuran Layar
+    // Update state berdasarkan ukuran layar
     function updateSidebarState() {
         isMobile = window.innerWidth < 768;
-        if (!isMobile && isSidebarOpen) {
-            // Di desktop, pastikan sidebar expanded jika sebelumnya open
-            sidebar.classList.remove('-translate-x-full');
-            sidebar.classList.remove('collapsed');
-            mainContent.classList.add('md:ml-64');
-            toggleIcon.classList.add('fa-chevron-left');
-            toggleIcon.classList.remove('fa-bars');
-            mobileBackdrop.classList.remove('active');
-            document.body.style.overflow = '';
-        } else if (!isMobile && !isSidebarOpen) {
-            // Default collapsed di desktop jika tidak open
-            sidebar.classList.add('collapsed');
-            mainContent.classList.add('md:ml-0');
-            toggleIcon.classList.add('fa-bars');
-            toggleIcon.classList.remove('fa-chevron-left');
-        } else if (isMobile) {
-            // Di mobile, default closed
+        if (isMobile) {
             sidebar.classList.add('-translate-x-full');
             mobileBackdrop.classList.remove('active');
             document.body.style.overflow = '';
             isSidebarOpen = false;
+        } else {
+            sidebar.classList.remove('-translate-x-full');
+            mobileBackdrop.classList.remove('active');
+            document.body.style.overflow = '';
+            openSidebar();
         }
     }
 
-    // Event Listeners untuk Toggle
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', toggleSidebar);
-    }
-    if (desktopToggle) {
-        desktopToggle.addEventListener('click', toggleSidebar);
-    }
-    if (sidebarClose) {
-        sidebarClose.addEventListener('click', () => {
-            isSidebarOpen = false;
-            toggleSidebar(); // Gunakan fungsi yang sama untuk tutup
-        });
-    }
-    if (mobileBackdrop) {
-        mobileBackdrop.addEventListener('click', () => {
-            if (isMobile) {
-                isSidebarOpen = false;
-                toggleSidebar();
-            }
-        });
-    }
+    // Event listener
+    mobileToggle?.addEventListener('click', toggleSidebar);
+    desktopToggle?.addEventListener('click', toggleSidebar);
+    sidebarClose?.addEventListener('click', closeSidebar);
+    mobileBackdrop?.addEventListener('click', () => {
+        if (isMobile) closeSidebar();
+    });
 
-    // Close on Nav Link Click (khusus mobile)
+    // ⛔ Sidebar tidak tertutup saat klik menu, kecuali di mobile
     const navLinks = sidebar.querySelectorAll('a[href]');
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            if (isMobile) {
-                isSidebarOpen = false;
-                toggleSidebar();
+        link.addEventListener('click', e => {
+            if (isMobile && !link.href.includes('logout')) {
+                closeSidebar();
             }
         });
     });
 
-    // Handle Window Resize
-    window.addEventListener('resize', () => {
-        updateSidebarState();
-    });
-
-    // Handle ESC Key untuk Close Sidebar (khusus mobile)
-    document.addEventListener('keydown', (e) => {
+    // Tutup sidebar di mobile saat tekan Escape
+    document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && isMobile && isSidebarOpen) {
-            isSidebarOpen = false;
-            toggleSidebar();
+            closeSidebar();
         }
     });
 
-    // Dark Mode Toggle (opsional)
-    const darkToggle = document.getElementById('dark-toggle');
-    if (darkToggle) {
-        darkToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            const icon = darkToggle.querySelector('i');
-            if (document.body.classList.contains('dark')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
-        });
-    }
+    // Responsif saat resize
+    window.addEventListener('resize', updateSidebarState);
 
-    // Fade-in Animation untuk Cards Saat Load (responsif)
+    // Animasi kartu + inisialisasi awal
     document.addEventListener('DOMContentLoaded', () => {
         const cards = document.querySelectorAll('.card-hover');
         cards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-            // Di mobile, kurangi delay untuk faster load
-            if (window.innerWidth < 768) {
-                card.style.animationDelay = `${index * 0.05}s`;
-            }
+            card.style.animationDelay = `${index * (window.innerWidth < 768 ? 0.05 : 0.1)}s`;
         });
-
-        // Tambahkan smooth scroll untuk main content
         document.querySelector('main').style.scrollBehavior = 'smooth';
-
-        // Inisialisasi state sidebar saat load
         updateSidebarState();
-    });
-
-    // Touch-friendly: Simulate Hover untuk Mobile (tap effect)
-    let touchStartY = 0;
-    document.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-    });
-    document.addEventListener('touchend', (e) => {
-        const touchEndY = e.changedTouches[0].clientY;
-        const touchDiff = touchEndY - touchStartY;
-        if (Math.abs(touchDiff) < 10) { // Tap, bukan swipe
-            const target = e.target.closest('.card-hover, .nav-link, .toggle-btn');
-            if (target) {
-                target.classList.add('ring-2', 'ring-green-300'); // Simulate hover ring
-                setTimeout(() => target.classList.remove('ring-2', 'ring-green-300'), 200);
-            }
-        }
     });
 </script>
 

@@ -219,103 +219,100 @@
     
 
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-        const mobileToggle = document.getElementById('mobile-toggle');
-        const desktopToggle = document.getElementById('desktop-toggle');
-        const sidebarClose = document.getElementById('sidebar-close');
-        const mobileBackdrop = document.getElementById('mobile-backdrop');
-        const toggleIcon = document.getElementById('toggle-icon');
-        let isSidebarOpen = false;
-        let isMobile = window.innerWidth < 768;
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const desktopToggle = document.getElementById('desktop-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const mobileBackdrop = document.getElementById('mobile-backdrop');
+    const toggleIcon = document.getElementById('toggle-icon');
+    let isSidebarOpen = true; // default: sidebar terbuka di desktop
+    let isMobile = window.innerWidth < 768;
 
-        function toggleSidebar() {
-            isSidebarOpen = !isSidebarOpen;
-            if (isSidebarOpen) {
-                sidebar.classList.remove('-translate-x-full', 'collapsed');
-                if (isMobile) {
-                    mobileBackdrop.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    mainContent.classList.remove('md:ml-0');
-                    mainContent.classList.add('md:ml-64');
-                    toggleIcon.classList.remove('fa-bars');
-                    toggleIcon.classList.add('fa-chevron-left');
-                }
-            } else {
-                if (isMobile) {
-                    sidebar.classList.add('-translate-x-full');
-                    mobileBackdrop.classList.remove('active');
-                    document.body.style.overflow = '';
-                } else {
-                    sidebar.classList.add('collapsed');
-                    mainContent.classList.remove('md:ml-64');
-                    mainContent.classList.add('md:ml-0');
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-bars');
-                }
-            }
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full', 'collapsed');
+        if (isMobile) {
+            mobileBackdrop.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } else {
+            mainContent.classList.remove('md:ml-0');
+            mainContent.classList.add('md:ml-64');
+            toggleIcon.classList.remove('fa-bars');
+            toggleIcon.classList.add('fa-chevron-left');
         }
+        isSidebarOpen = true;
+    }
 
-        function updateSidebarState() {
-            isMobile = window.innerWidth < 768;
-            if (!isMobile && isSidebarOpen) {
-                sidebar.classList.remove('-translate-x-full', 'collapsed');
-                mainContent.classList.add('md:ml-64');
-                toggleIcon.classList.add('fa-chevron-left');
-                toggleIcon.classList.remove('fa-bars');
-                mobileBackdrop.classList.remove('active');
-                document.body.style.overflow = '';
-            } else if (!isMobile && !isSidebarOpen) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('md:ml-0');
-                toggleIcon.classList.add('fa-bars');
-                toggleIcon.classList.remove('fa-chevron-left');
-            } else if (isMobile) {
-                sidebar.classList.add('-translate-x-full');
-                mobileBackdrop.classList.remove('active');
-                document.body.style.overflow = '';
-                isSidebarOpen = false;
-            }
+    function closeSidebar() {
+        if (isMobile) {
+            sidebar.classList.add('-translate-x-full');
+            mobileBackdrop.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.remove('md:ml-64');
+            mainContent.classList.add('md:ml-0');
+            toggleIcon.classList.remove('fa-chevron-left');
+            toggleIcon.classList.add('fa-bars');
         }
+        isSidebarOpen = false;
+    }
 
-        if (mobileToggle) mobileToggle.addEventListener('click', toggleSidebar);
-        if (desktopToggle) desktopToggle.addEventListener('click', toggleSidebar);
-        if (sidebarClose) sidebarClose.addEventListener('click', () => { isSidebarOpen = false; toggleSidebar(); });
-        if (mobileBackdrop) mobileBackdrop.addEventListener('click', () => {
-            if (isMobile) { isSidebarOpen = false; toggleSidebar(); }
-        });
+    function toggleSidebar() {
+        if (isSidebarOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
 
-        const navLinks = sidebar.querySelectorAll('a[href]');
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                if (isMobile && !link.href.includes('logout')) {
-                    isSidebarOpen = false;
-                    toggleSidebar();
-                }
-            });
-        });
+    function updateSidebarState() {
+        isMobile = window.innerWidth < 768;
+        if (isMobile) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
 
-        window.addEventListener('resize', updateSidebarState);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isMobile && isSidebarOpen) {
-                isSidebarOpen = false;
-                toggleSidebar();
+    // Tombol-tombol event
+    mobileToggle?.addEventListener('click', toggleSidebar);
+    desktopToggle?.addEventListener('click', toggleSidebar);
+    sidebarClose?.addEventListener('click', closeSidebar);
+    mobileBackdrop?.addEventListener('click', () => {
+        if (isMobile) closeSidebar();
+    });
+
+    // Jangan tutup sidebar saat klik menu
+    const navLinks = sidebar.querySelectorAll('a[href]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            // hanya tutup otomatis di mobile
+            if (isMobile && !link.href.includes('logout')) {
+                closeSidebar();
             }
         });
+    });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.card-hover');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-                if (window.innerWidth < 768) {
-                    card.style.animationDelay = `${index * 0.05}s`;
-                }
-            });
-            document.querySelector('main').style.scrollBehavior = 'smooth';
-            updateSidebarState();
+    // Tutup sidebar di mobile saat tekan Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && isMobile && isSidebarOpen) {
+            closeSidebar();
+        }
+    });
+
+    window.addEventListener('resize', updateSidebarState);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card-hover');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            if (window.innerWidth < 768) card.style.animationDelay = `${index * 0.05}s`;
         });
-    </script>
+        document.querySelector('main').style.scrollBehavior = 'smooth';
+        updateSidebarState();
+    });
+</script>
 
     @stack('scripts')
 </body>

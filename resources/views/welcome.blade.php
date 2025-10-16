@@ -592,9 +592,10 @@
                 <h3>📍 Informasi Operasional</h3>
                 <div class="info-box">
                     <p>
-                        <strong>Lokasi Pusat:</strong> Jl. Ekosistem Hijau No. 12, Kota Bersih<br />
+                        <strong>Lokasi Pusat:</strong> Jl. Cilosari Dalam RT 04 RW 06, Kemijen, Semarang Timur<br />
                         <strong>Jam Operasional:</strong> Senin - Jumat, 08:00 - 15:00 WIB<br />
-                        <strong>Kontak:</strong> (021) 1234-BANK / info@banksampahdigital.com
+                        <strong>Kontak:</strong> (021) 9872345610 <br>
+                        <strong>Email :</strong> trash2cash@gmail.com
                     </p>
                 </div>
 

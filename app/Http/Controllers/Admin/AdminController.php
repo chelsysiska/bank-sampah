@@ -78,8 +78,12 @@ class AdminController extends Controller
         ));
     }
 
-    public function riwayatKas()
+    public function riwayatKas(Request $request)
 {
+    // Ambil input filter TANPA default otomatis
+    $bulanDipilih = $request->get('bulan');
+    $tahunDipilih = $request->get('tahun');
+
     // Saldo awal kas = total pendapatan semua setoran
     $saldoAwalKas = \App\Models\Setoran::sum('total_harga');
 
@@ -90,10 +94,29 @@ class AdminController extends Controller
     // Hitung total kas
     $totalKas = $saldoAwalKas + $totalPemasukanManual - $totalPengeluaranManual;
 
-    // Ambil riwayat kas
-    $riwayatKas = \App\Models\Kas::orderBy('created_at', 'desc')->paginate(10);
+    // Ambil daftar tahun unik dari tabel kas
+    $tahunList = \App\Models\Kas::selectRaw('YEAR(created_at) as tahun')
+        ->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun');
 
-    return view('admin.kas.riwayat', compact('totalKas', 'riwayatKas'));
+    // Ambil data riwayat kas sesuai filter bulan & tahun
+    $riwayatKas = \App\Models\Kas::when($bulanDipilih, function ($query) use ($bulanDipilih) {
+            $query->whereMonth('created_at', $bulanDipilih);
+        })
+        ->when($tahunDipilih, function ($query) use ($tahunDipilih) {
+            $query->whereYear('created_at', $tahunDipilih);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+    return view('admin.kas.riwayat', compact(
+        'totalKas',
+        'riwayatKas',
+        'bulanDipilih',
+        'tahunDipilih',
+        'tahunList'
+    ));
 }
 
 }

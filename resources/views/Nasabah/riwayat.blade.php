@@ -16,6 +16,48 @@
     
     <!-- Table Content -->
     <div class="p-4 md:p-6">
+        <!-- Filter Bulan & Tahun -->
+<div class="mb-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+    <form method="GET" action="{{ route('nasabah.riwayat') }}" class="flex flex-wrap items-end gap-4">
+        <div>
+            <label for="bulan" class="block text-sm font-medium text-gray-700">Bulan</label>
+            <select name="bulan" id="bulan" class="mt-1 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Semua</option>
+                @foreach(range(1, 12) as $m)
+                    <option value="{{ $m }}" {{ request('bulan') == $m ? 'selected' : '' }}>
+                        {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div>
+            <label for="tahun" class="block text-sm font-medium text-gray-700">Tahun</label>
+            <select name="tahun" id="tahun" class="mt-1 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Semua</option>
+                @foreach(range(date('Y'), date('Y') - 5) as $y)
+                    <option value="{{ $y }}" {{ request('tahun') == $y ? 'selected' : '' }}>
+                        {{ $y }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                <i class="fas fa-search mr-1"></i> Filter
+            </button>
+        </div>
+
+        @if(request('bulan') || request('tahun'))
+        <div>
+            <a href="{{ route('nasabah.riwayat') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
+                <i class="fas fa-undo mr-1"></i> Reset
+            </a>
+        </div>
+        @endif
+    </form>
+</div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
