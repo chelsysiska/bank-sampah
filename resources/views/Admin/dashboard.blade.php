@@ -8,89 +8,72 @@
 
 @section('content')
 
-<!-- Statistics Cards -->
+<!-- =============================
+     STATISTIK DASHBOARD
+============================= -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+
     <!-- Total Pendapatan Card -->
-    <div class="card-hover bg-gradient-to-br from-yellow-50 to-amber-50 p-6 md:p-8 rounded-2xl shadow-lg border-l-4 border-yellow-500 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 opacity-10 rounded-full -translate-y-8 translate-x-8"></div>
-        <div class="absolute bottom-0 left-0 w-24 h-24 bg-yellow-200 opacity-10 rounded-full translate-y-8 -translate-x-8"></div>
-        <div class="relative z-10">
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                    <i class="fas fa-money-bill-wave text-2xl text-white"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-2">Total Pendapatan Semua Nasabah</h3>
-                    <p class="text-2xl md:text-3xl lg:text-4xl font-bold text-yellow-600 break-all">
-                        Rp{{ number_format($totalPendapatanSemuaNasabah, 0, ',', '.') }}
-                    </p>
-                    <div class="mt-2 flex items-center text-sm text-yellow-700">
-                        <i class="fas fa-chart-line mr-1"></i>
-                        <span>Total akumulasi</span>
-                    </div>
-                </div>
+    <div class="card-hover bg-gradient-to-br from-yellow-100 to-yellow-50 border border-yellow-300 shadow-lg rounded-2xl p-6 flex flex-col justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-yellow-500 text-white p-3 rounded-xl shadow-md">
+                <i class="fas fa-coins text-xl"></i>
+            </div>
+            <div>
+                <p class="text-gray-700 font-medium text-sm">Total Pendapatan Semua Nasabah</p>
+                <p class="text-3xl font-bold text-yellow-700 break-words whitespace-normal">
+                    Rp{{ number_format($totalPendapatanSemuaNasabah, 0, ',', '.') }}
+                </p>
+                <p class="text-xs text-yellow-700/70 mt-1">💰 Total akumulasi</p>
             </div>
         </div>
     </div>
 
     <!-- Total Berat Sampah Card -->
-    <div class="card-hover bg-gradient-to-br from-green-50 to-emerald-50 p-6 md:p-8 rounded-2xl shadow-lg border-l-4 border-green-500 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 opacity-10 rounded-full -translate-y-8 translate-x-8"></div>
-        <div class="absolute bottom-0 left-0 w-24 h-24 bg-green-200 opacity-10 rounded-full translate-y-8 -translate-x-8"></div>
-        <div class="relative z-10">
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                    <i class="fas fa-weight-hanging text-2xl text-white"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-2">Total Berat Sampah</h3>
-                    <p class="text-2xl md:text-3xl lg:text-4xl font-bold text-green-600 break-all">
-                        {{ number_format($totalBeratSemuaNasabah, 2, ',', '.') }} kg
-                    </p>
-                    <div class="mt-2 flex items-center text-sm text-green-700">
-                        <i class="fas fa-recycle mr-1"></i>
-                        <span>Sampah terkumpul</span>
-                    </div>
-                </div>
+    <div class="card-hover bg-gradient-to-br from-green-100 to-green-50 border border-green-300 shadow-lg rounded-2xl p-6 flex flex-col justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-green-500 text-white p-3 rounded-xl shadow-md">
+                <i class="fas fa-weight text-xl"></i>
+            </div>
+            <div>
+                <p class="text-gray-700 font-medium text-sm">Total Berat Sampah</p>
+                <p class="text-3xl font-bold text-green-700 break-words whitespace-normal">
+                    {{ number_format($totalBeratSemuaNasabah, 2, ',', '.') }} kg
+                </p>
+                <p class="text-xs text-green-700/70 mt-1">♻️ Sampah terkumpul</p>
             </div>
         </div>
     </div>
 
     <!-- Total Uang Kas Card -->
-    <div class="card-hover bg-gradient-to-br from-blue-50 to-indigo-50 p-6 md:p-8 rounded-2xl shadow-lg border-l-4 border-blue-500 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-200 opacity-10 rounded-full -translate-y-8 translate-x-8"></div>
-        <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-200 opacity-10 rounded-full translate-y-8 -translate-x-8"></div>
-        <div class="relative z-10">
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                    <i class="fas fa-wallet text-2xl text-white"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-2">Total Uang Kas</h3>
-                    <p class="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-600 break-all">
-                        Rp{{ number_format($totalKas, 0, ',', '.') }}
-                    </p>
-                    <div class="mt-2 flex items-center text-sm text-blue-700">
-                        <i class="fas fa-file-invoice mr-1"></i>
-                        <span>Kas operasional</span>
-                    </div>
-                </div>
+    <div class="card-hover bg-gradient-to-br from-blue-100 to-blue-50 border border-blue-300 shadow-lg rounded-2xl p-6 flex flex-col justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-500 text-white p-3 rounded-xl shadow-md">
+                <i class="fas fa-wallet text-xl"></i>
             </div>
-            <div class="mt-4 flex space-x-2">
-                <a href="{{ route('admin.kas.create', ['jenis' => 'pemasukan']) }}" 
-                   class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-green-700 bg-green-100 rounded-full hover:bg-green-200 transition">
-                    <i class="fas fa-plus mr-1"></i> Tambah Pemasukan
-                </a>
-                <a href="{{ route('admin.kas.create', ['jenis' => 'pengeluaran']) }}" 
-                   class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-700 bg-red-100 rounded-full hover:bg-red-200 transition">
-                    <i class="fas fa-minus mr-1"></i> Catat Pengeluaran
-                </a>
+            <div>
+                <p class="text-gray-700 font-medium text-sm">Total Uang Kas</p>
+                <p class="text-3xl font-bold text-blue-700 break-words whitespace-normal">
+                    Rp{{ number_format($totalKas, 0, ',', '.') }}
+                </p>
+                <p class="text-xs text-blue-700/70 mt-1">📘 Kas operasional</p>
+
+                <div class="mt-3 flex gap-2">
+                    <a href="{{ route('admin.kas.create', ['jenis' => 'pemasukan']) }}"
+                       class="inline-flex items-center px-3 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full hover:bg-green-200 transition">
+                        <i class="fas fa-plus mr-1"></i> Tambah Pemasukan
+                    </a>
+
+                    <a href="{{ route('admin.kas.create', ['jenis' => 'pengeluaran']) }}"
+                       class="inline-flex items-center px-3 py-1 text-xs font-medium text-red-700 bg-red-100 rounded-full hover:bg-red-200 transition">
+                        <i class="fas fa-minus mr-1"></i> Catat Pengeluaran
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Monthly Report Table -->
 <div class="bg-white shadow-xl rounded-2xl overflow-hidden mb-8">
     <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
         <h3 class="text-lg md:text-xl font-semibold text-white flex items-center">
@@ -189,7 +172,6 @@
     </div>
 </div>
 
-<!-- Riwayat Kas -->
 <div class="bg-white shadow-xl rounded-2xl overflow-hidden mb-8">
     <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
         <h3 class="text-lg md:text-xl font-semibold text-white flex items-center">
@@ -217,7 +199,7 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
                                     {{ $kas->created_at->timezone('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
-                            </td>
+                                </td>
                                 <td class="px-4 py-3">
                                     @if($kas->jenis === 'pemasukan')
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -248,7 +230,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             <div class="mt-4">
                 {{ $riwayatKas->links() }}
             </div>
@@ -261,7 +242,6 @@
     </div>
 </div>
 
-<!-- Divider -->
 <div class="flex items-center my-8">
     <div class="flex-1 h-px bg-gradient-to-r from-transparent to-gray-300"></div>
     <div class="px-4 text-gray-500 font-medium">
@@ -271,14 +251,12 @@
     <div class="flex-1 h-px bg-gradient-to-l from-transparent to-gray-300"></div>
 </div>
 
-<!-- Chart Bulanan -->
 <div class="bg-white shadow-xl rounded-2xl overflow-hidden mb-8">
     <div class="flex justify-between items-center bg-gradient-to-r from-green-600 to-blue-600 px-6 py-4">
         <h3 class="text-lg md:text-xl font-semibold text-white flex items-center">
             <i class="fas fa-chart-line mr-2"></i>
             <span>Grafik Pendapatan per Bulan ({{ $tahunDipilih }})</span>
         </h3>
-        <!-- Filter Tahun -->
         <form method="GET" class="bg-white rounded-lg px-3 py-1">
             <select name="tahun" onchange="this.form.submit()" class="border-0 text-sm font-medium text-gray-700">
                 @php

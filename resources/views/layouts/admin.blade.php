@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') - Trash2Cash</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -226,9 +227,10 @@
     const sidebarClose = document.getElementById('sidebar-close');
     const mobileBackdrop = document.getElementById('mobile-backdrop');
     const toggleIcon = document.getElementById('toggle-icon');
-    let isSidebarOpen = true; // default: sidebar terbuka di desktop
+    let isSidebarOpen = true;
     let isMobile = window.innerWidth < 768;
 
+    // === Fungsi ===
     function openSidebar() {
         sidebar.classList.remove('-translate-x-full', 'collapsed');
         if (isMobile) {
@@ -259,56 +261,55 @@
     }
 
     function toggleSidebar() {
-        if (isSidebarOpen) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
+        isSidebarOpen ? closeSidebar() : openSidebar();
     }
 
+    // === Update State saat Resize ===
     function updateSidebarState() {
+        const wasMobile = isMobile;
         isMobile = window.innerWidth < 768;
+
         if (isMobile) {
             closeSidebar();
         } else {
             openSidebar();
+            if (wasMobile && !isMobile) {
+                // Reset posisi sidebar ketika dari mobile ke desktop
+                sidebar.classList.remove('-translate-x-full');
+                mobileBackdrop.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
     }
 
-    // Tombol-tombol event
+    // === Event Listeners ===
     mobileToggle?.addEventListener('click', toggleSidebar);
     desktopToggle?.addEventListener('click', toggleSidebar);
     sidebarClose?.addEventListener('click', closeSidebar);
-    mobileBackdrop?.addEventListener('click', () => {
-        if (isMobile) closeSidebar();
-    });
+    mobileBackdrop?.addEventListener('click', () => { if (isMobile) closeSidebar(); });
 
-    // Jangan tutup sidebar saat klik menu
-    const navLinks = sidebar.querySelectorAll('a[href]');
-    navLinks.forEach(link => {
-        link.addEventListener('click', e => {
-            // hanya tutup otomatis di mobile
-            if (isMobile && !link.href.includes('logout')) {
-                closeSidebar();
-            }
-        });
-    });
-
-    // Tutup sidebar di mobile saat tekan Escape
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && isMobile && isSidebarOpen) {
-            closeSidebar();
-        }
+        if (e.key === 'Escape' && isMobile && isSidebarOpen) closeSidebar();
     });
 
     window.addEventListener('resize', updateSidebarState);
 
+    // Tutup sidebar otomatis di mobile saat klik menu
+    sidebar.querySelectorAll('a[href]').forEach(link => {
+        link.addEventListener('click', e => {
+            if (isMobile && !link.href.includes('logout')) closeSidebar();
+        });
+    });
+
+    // === Inisialisasi ===
     document.addEventListener('DOMContentLoaded', () => {
+        // Animasi muncul kartu
         const cards = document.querySelectorAll('.card-hover');
         cards.forEach((card, index) => {
             card.style.animationDelay = `${index * 0.1}s`;
             if (window.innerWidth < 768) card.style.animationDelay = `${index * 0.05}s`;
         });
+
         document.querySelector('main').style.scrollBehavior = 'smooth';
         updateSidebarState();
     });

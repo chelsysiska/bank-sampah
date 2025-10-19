@@ -1,3 +1,5 @@
+@section('title', 'Register')
+
 <x-guest-layout>
     <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 px-6 py-12 relative overflow-hidden">
         

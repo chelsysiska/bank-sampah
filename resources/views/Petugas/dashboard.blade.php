@@ -21,65 +21,64 @@
             </div>
         @endif
 
-        <!-- Statistik Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <!-- Total Setoran -->
-            <div class="bg-gradient-to-br from-green-400 via-green-500 to-green-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
-                <div class="flex items-center justify-between relative z-10">
-                    <div>
-                        <h3 class="text-lg font-semibold opacity-90">Total Setoran</h3>
-                        <p class="text-4xl font-bold mt-2">{{ $totalSetoran }}</p>
-                    </div>
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-boxes text-2xl"></i> {{-- ❌ Tidak bergerak --}}
-                    </div>
-                </div>
-                <p class="text-sm opacity-80 mt-4">Jumlah Setoran Bulan Ini</p>
+       <!-- Statistik Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <!-- Total Setoran -->
+    <div class="bg-gradient-to-br from-green-100 to-green-50 text-green-800 border border-green-200 rounded-2xl shadow-lg p-5 card-hover relative overflow-hidden">
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col justify-between min-h-[90px]">
+                <h3 class="text-base font-semibold opacity-90">Total Setoran</h3>
+                <p class="text-3xl font-bold leading-none mt-1">{{ $totalSetoran }}</p>
             </div>
-
-            <!-- Total Berat -->
-            <div class="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
-                <div class="flex items-center justify-between relative z-10">
-                    <div>
-                        <h3 class="text-lg font-semibold opacity-90">Total Berat (kg)</h3>
-                        <p class="text-4xl font-bold mt-2">{{ number_format($totalBerat, 2) }}</p>
-                    </div>
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-weight-hanging text-2xl animate-pulse"></i>
-                    </div>
-                </div>
-                <p class="text-sm opacity-80 mt-4">Berat sampah terkumpul</p>
-            </div>
-
-            <!-- Total Harga -->
-            <div class="bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
-                <div class="flex items-center justify-between relative z-10">
-                    <div>
-                        <h3 class="text-lg font-semibold opacity-90">Pendapatan Semua Nasabah</h3>
-                        <p class="text-4xl font-bold mt-2">Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
-                    </div>
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-wallet text-2xl"></i>
-                    </div>
-                </div>
-                <p class="text-sm opacity-80 mt-4">Nilai ekonomi setoran</p>
-            </div>
-
-            <!-- 🟢 Total Uang Kas -->
-            <div class="bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 text-white rounded-2xl shadow-2xl p-6 card-hover relative overflow-hidden">
-                <div class="flex items-center justify-between relative z-10">
-                    <div>
-                        <h3 class="text-lg font-semibold opacity-90">Total Uang Kas</h3>
-                        <p class="text-4xl font-bold mt-2">Rp{{ number_format($totalKas, 0, ',', '.') }}</p>
-                    </div>
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-coins text-2xl"></i> {{-- ❌ Tidak bergerak --}}
-                    </div>
-                </div>
-                <p class="text-sm opacity-80 mt-4">Jumlah uang kas keseluruhan</p>
+            <div class="flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-xl shrink-0 shadow-md">
+                <i class="fas fa-boxes text-2xl animate-pulse"></i>
             </div>
         </div>
+        <p class="text-sm text-green-700 opacity-80 mt-3">Jumlah Setoran Bulan Ini</p>
+    </div>
 
+    <!-- Total Berat -->
+    <div class="bg-gradient-to-br from-purple-100 to-purple-50 text-purple-800 border border-purple-200 rounded-2xl shadow-lg p-5 card-hover relative overflow-hidden">
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col justify-between min-h-[90px]">
+                <h3 class="text-base font-semibold opacity-90">Total Berat (kg)</h3>
+                <p class="text-3xl font-bold leading-none mt-1">{{ number_format($totalBerat, 2) }}</p>
+            </div>
+            <div class="flex items-center justify-center w-14 h-14 bg-purple-500 text-white rounded-xl shrink-0 shadow-md">
+                <i class="fas fa-weight-hanging text-2xl animate-pulse"></i>
+            </div>
+        </div>
+        <p class="text-sm text-purple-700 opacity-80 mt-3">Berat sampah terkumpul</p>
+    </div>
+
+    <!-- Pendapatan Semua Nasabah -->
+    <div class="bg-gradient-to-br from-yellow-100 to-yellow-50 text-yellow-800 border border-yellow-200 rounded-2xl shadow-lg p-5 card-hover relative overflow-hidden">
+    <div class="flex items-center justify-between">
+        <div class="flex flex-col justify-between min-h-[90px] **flex-grow mr-3**">
+            <h3 class="text-base font-semibold opacity-90">Pendapatan Semua Nasabah</h3>
+            <p class="text-3xl font-bold leading-none mt-1">Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
+        </div>
+        <div class="flex items-center justify-center w-14 h-14 bg-yellow-500 text-white rounded-xl shrink-0 shadow-md">
+            <i class="fas fa-wallet text-2xl animate-pulse"></i>
+        </div>
+    </div>
+    <p class="text-sm text-yellow-700 opacity-80 mt-3">Nilai ekonomi setoran</p>
+</div>
+
+    <!-- Total Uang Kas -->
+    <div class="bg-gradient-to-br from-sky-100 to-sky-50 text-sky-800 border border-sky-200 rounded-2xl shadow-lg p-5 card-hover relative overflow-hidden">
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col justify-between min-h-[90px]">
+                <h3 class="text-base font-semibold opacity-90">Total Uang Kas</h3>
+                <p class="text-3xl font-bold leading-none mt-1">Rp{{ number_format($totalKas, 0, ',', '.') }}</p>
+            </div>
+            <div class="flex justify-center items-center w-14 h-14 bg-sky-500 text-white rounded-xl shrink-0 shadow-md">
+                <i class="fas fa-coins text-2xl animate-pulse"></i>
+            </div>
+        </div>
+        <p class="text-sm text-sky-700 opacity-80 mt-3">Jumlah uang kas keseluruhan</p>
+    </div>
+</div>
         <!-- Aktivitas Terbaru -->
         <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/20">
             <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
@@ -106,7 +105,7 @@
                             <span class="text-green-600 font-bold text-lg">
                                 Rp{{ number_format($a->total_harga, 0, ',', '.') }}
                             </span>
-                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <div class="flex items-center justify-center w-14 h-14 bg-white/20 rounded-xl shrink-0 relative -mt-5">
                                 <i class="fas fa-check text-green-500 text-sm"></i>
                             </div>
                         </div>

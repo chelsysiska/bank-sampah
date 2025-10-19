@@ -7,7 +7,7 @@
 @section('content')
 <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+    <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-4 flex flex-col md:flex-row justify-between items-center ">
         <div>
             <h3 class="text-lg md:text-xl font-semibold text-white flex items-center">
                 <i class="fas fa-recycle mr-2"></i> Riwayat Setoran
@@ -117,7 +117,7 @@
     <div class="overflow-x-auto px-4 pb-4">
         <table class="min-w-full border border-gray-200 rounded-lg text-sm bg-white">
             <thead>
-                <tr class="bg-green-600 text-white text-left">
+                <tr class="bg-[#a7f3d0] text-[#064e3b] text-left"> <!-- 💚 Ganti hijau tua ke hijau pastel lembut -->
                     <th class="px-4 py-3">No</th>
                     <th class="px-4 py-3">Tanggal</th>
                     <th class="px-4 py-3">Nasabah</th>
@@ -131,29 +131,35 @@
             </thead>
             <tbody class="divide-y divide-gray-200 text-gray-800">
                 @forelse($setorans as $index => $setoran)
-                    <tr class="hover:bg-gray-50 transition-colors">
+                    <tr class="hover:bg-green-50 transition-colors"> <!-- 🌿 Hover lembut -->
                         <td class="px-4 py-3">{{ $setorans->firstItem() + $index }}</td>
                         <td class="px-4 py-3">{{ \Carbon\Carbon::parse($setoran->tanggal_setoran)->format('d/m/Y') }}</td>
                         <td class="px-4 py-3">{{ $setoran->nasabah->name }}</td>
                         <td class="px-4 py-3">{{ $setoran->jenisSampah->nama }}</td>
                         <td class="px-4 py-3">{{ number_format($setoran->berat, 2) }}</td>
-                        <td class="px-4 py-3 font-semibold text-green-600">
+                        <td class="px-4 py-3 font-semibold text-[#16a34a]">
                             Rp {{ number_format($setoran->total_harga, 0, ',', '.') }}
                         </td>
                         <td class="px-4 py-3">
-                            @if($setoran->is_reported)
-                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                    Dilaporkan
-                                </span>
-                            @else
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                    Belum Dilaporkan
-                                </span>
-                            @endif
-                        </td>
+    @if($setoran->is_reported)
+        @if(isset($laporanBulanIni) && $laporanBulanIni->created_at)
+            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                Dilaporkan bulan {{ \Carbon\Carbon::parse($laporanBulanIni->created_at)->translatedFormat('F') }}
+            </span>
+        @else
+            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                Dilaporkan
+            </span>
+        @endif
+    @else
+        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+            Belum Dilaporkan
+        </span>
+    @endif
+</td>
                         <td class="px-4 py-3 text-sm">
                             @if(!$setoran->is_reported)
-                                <span class="text-blue-600"><i class="fas fa-check-circle mr-1"></i>Bisa dilaporkan</span>
+                                <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Bisa dilaporkan</span>
                             @else
                                 <span class="text-gray-600"><i class="fas fa-check-circle mr-1"></i>Terkirim</span>
                             @endif
