@@ -9,6 +9,7 @@ class Laporan extends Model
 {
     use HasFactory;
 
+    protected $table = 'laporans';
     protected $fillable = [
         'bulan',
         'tahun',
@@ -19,7 +20,7 @@ class Laporan extends Model
     ];
 
     public function petugas()
-    {
-        return $this->belongsTo(User::class, 'petugas_id');
-    }
+{
+    return $this->belongsTo(User::class, 'petugas_id');
+}
 }

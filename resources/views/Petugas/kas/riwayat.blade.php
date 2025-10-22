@@ -67,6 +67,7 @@
                             <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Keterangan</th>
                             <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Jumlah</th>
                             <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Bukti</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Petugas</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -99,6 +100,9 @@
                                         <span class="text-gray-400 italic">Tidak ada</span>
                                     @endif
                                 </td>
+                                <td class="px-4 py-3 text-sm text-gray-700">
+    {{ $kas->petugas->name ?? 'Admin Sistem' }}
+</td>
                             </tr>
                         @endforeach
                     </tbody>

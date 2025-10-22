@@ -64,6 +64,7 @@
                             <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase tracking-wider">Jenis</th>
                             <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase tracking-wider">Keterangan</th>
                             <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase tracking-wider">Jumlah</th>
+                            <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase tracking-wider">Petugas</th>
                             @if(auth()->user()->isAdmin())
                                 <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase tracking-wider">Bukti</th>
                             @endif
@@ -90,6 +91,9 @@
                                 <td class="px-4 py-3 text-sm font-medium {{ $kas->jenis === 'pemasukan' ? 'text-green-600' : 'text-red-600' }}">
                                     Rp{{ number_format($kas->jumlah, 0, ',', '.') }}
                                 </td>
+                                <td class="px-4 py-3 text-gray-700">
+    {{ $kas->petugas->nama_petugas ?? $kas->petugas->name ?? '-' }}
+</td>
                                 @if(auth()->user()->isAdmin())
                                     <td class="px-4 py-3 text-sm">
                                         @if($kas->dokumentasi)

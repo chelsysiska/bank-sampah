@@ -7,7 +7,7 @@ use App\Http\Controllers\Petugas\KelolaSampahController;
 use App\Http\Controllers\Nasabah\NasabahController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SetoranAdminController;
-use App\Http\Controllers\Admin\NasabahAdminController;
+use App\Http\Controllers\Admin\AdminPetugasController;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -67,6 +67,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/kas', [App\Http\Controllers\Admin\KasController::class, 'store'])->name('kas.store');
 
         Route::get('/kas/riwayat', [AdminController::class, 'riwayatKas'])->name('kas.riwayat');
+
+       Route::resource('petugas', App\Http\Controllers\Admin\AdminPetugasController::class);
     });
 });
 

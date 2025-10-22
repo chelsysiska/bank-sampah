@@ -42,9 +42,9 @@
                     <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-wallet text-xl"></i>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold">Total Pendapatan Anda</h3>
-                        <p class="opacity-90 text-sm">Akumulasi pendapatan personal</p>
+                    <div style="display:flex;flex-direction:column;justify-content:flex-start;line-height:1;margin:0;padding:0;">
+                        <h3 class="text-lg font-semibold" style="margin:0;padding:0;line-height:1;">Total Pendapatan Anda</h3>
+                        <p class="opacity-90 text-sm h-[40px] flex items-end" style="margin:0;padding:0;line-height:1;align-items:flex-start !important;height:auto !important;">Kas operasional bank sampah</p>
                     </div>
                 </div>
                 <i class="fas fa-arrow-right text-lg opacity-60 group-hover:translate-x-2 transition-transform"></i>
@@ -58,9 +58,11 @@
             </div>
         </div>
         
-        <!-- Animated wave -->
-        <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-white/30">
-            <div class="h-full bg-white/50 rounded-full animate-pulse" style="width: 85%"></div>
+        <!-- Animated dots -->
+        <div class="absolute top-3 right-3 flex space-x-1">
+            <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+            <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
         </div>
     </div>
 
@@ -73,9 +75,9 @@
                     <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-users text-xl"></i>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold">Pendapatan Komunitas</h3>
-                        <p class="opacity-90 text-sm">Total seluruh nasabah</p>
+                    <div style="display:flex;flex-direction:column;justify-content:flex-start;line-height:1;margin:0;padding:0;">
+                        <h3 class="text-lg font-semibold" style="margin:0;padding:0;line-height:1;">Pendapatan Komunitas</h3>
+                        <p class="opacity-90 text-sm h-[40px] flex items-end" style="margin:0;padding:0;line-height:1;align-items:flex-start !important;height:auto !important;">Total seluruh nasabah</p>
                     </div>
                 </div>
                 <i class="fas fa-arrow-right text-lg opacity-60 group-hover:translate-x-2 transition-transform"></i>
@@ -106,9 +108,9 @@
                     <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-piggy-bank text-xl"></i>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold">Total Kas</h3>
-                        <p class="opacity-90 text-sm">Kas operasional bank sampah</p>
+                    <div style="display:flex;flex-direction:column;justify-content:flex-start;line-height:1;margin:0;padding:0;">
+                        <h3 class="text-lg font-semibold" style="margin:0;padding:0;line-height:1;">Total Uang Kas</h3>
+                        <p class="opacity-90 text-sm h-[40px] flex items-end" style="margin:0;padding:0;line-height:1;align-items:flex-start !important;height:auto !important;">Kas operasional bank sampah</p>
                     </div>
                 </div>
                 <i class="fas fa-arrow-right text-lg opacity-60 group-hover:translate-x-2 transition-transform"></i>
@@ -122,11 +124,11 @@
             </div>
         </div>
         
-        <!-- Animated coins -->
-        <div class="absolute bottom-3 right-3 flex space-x-1">
-            <i class="fas fa-coin text-yellow-300 text-sm animate-bounce" style="animation-delay: 0.1s"></i>
-            <i class="fas fa-coin text-yellow-300 text-sm animate-bounce" style="animation-delay: 0.3s"></i>
-            <i class="fas fa-coin text-yellow-300 text-sm animate-bounce" style="animation-delay: 0.5s"></i>
+        <!-- Animated dots -->
+        <div class="absolute top-3 right-3 flex space-x-1">
+            <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+            <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            <div class="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
         </div>
     </div>
 </div>

@@ -16,174 +16,117 @@
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    <style> 
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'); 
     body { 
         font-family: 'Inter', sans-serif; 
-        background: linear-gradient(to bottom right, #f3f4f6 0%, #e7f6ef 100%);
-        overflow-x: hidden;
-        transition: margin-left 0.3s ease;
-    }
-
-    /* 🌿 HIJAU PASTEL ESTETIK – versi lebih gelap & tenang */
+        background: linear-gradient(to bottom right, #f8fafc 0%, #e2e8f0 100%); 
+        overflow-x: hidden; transition: margin-left 0.3s ease; /* Smooth adjust main content */ 
+    } 
     .gradient-bg { 
-        background: #86efac; /* hijau pastel sedikit lebih gelap */
-        box-shadow: inset 0 -1px 0 rgba(255,255,255,0.1), 0 4px 20px rgba(21,128,61,0.15);
-    }
-
-    /* ✅ Tambahan agar footer warnanya sama persis dengan header */
-    footer.footer {
-        background: #86efac !important; /* sama seperti .gradient-bg */
-        color: #064e3b !important; /* warna teks agar kontras lembut */
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
-    }
-
-    /* Sidebar calm elegan */
-    #sidebar {
-        background-color: #bbf7d0; /* hijau muda tenang */
-        color: #334155; /* abu gelap alami */
-        backdrop-filter: blur(10px);
-        border-right: 1px solid rgba(148,163,184,0.3);
-    }
-
+        background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%); 
+    } 
     .card-hover { 
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-        animation: fadeInUp 0.6s ease-out;
-    }
+        animation: fadeInUp 0.6s ease-out; 
+    } 
     .card-hover:hover { 
         transform: translateY(-8px) scale(1.02); 
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05); 
     }
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeInUp { 
+        from { opacity: 0; transform: translateY(20px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    } 
     .nav-link { 
         transition: all 0.3s ease; 
         position: relative; 
-        color: #374151; 
-    }
-
-    .nav-link:hover::before {
+    } 
+    .nav-link:hover::before { 
         content: ''; 
         position: absolute; 
-        left: 0; 
-        top: 50%; 
+        left: 0; top: 50%; 
         transform: translateY(-50%); 
-        width: 3px; 
-        height: 20px; 
-        background: #16a34a; /* hijau medium pastel */
-        border-radius: 0 2px 2px 0;
-    }
-
-    .nav-link.active {
-        background: transparent !important;
-        color: #065f46 !important; /* hijau tua lembut */
-        font-weight: 600;
-    }
-
+        width: 3px; height: 20px; 
+        background: #10b981; 
+        border-radius: 0 2px 2px 0; 
+    } 
     .activity-item { 
         position: relative; 
         padding-left: 2rem; 
-    }
-    .activity-item::before {
+    } 
+    .activity-item::before { 
         content: ''; 
         position: absolute; 
-        left: 0.5rem; 
-        top: 0; 
-        bottom: 0; 
-        width: 2px; 
-        background: linear-gradient(to bottom, #4ade80, #86efac); 
-    }
-    .activity-dot {
+        left: 0.5rem; top: 0; 
+        bottom: 0; width: 2px; 
+        background: linear-gradient(to bottom, #10b981, #d1fae5); 
+    } 
+    .activity-dot { 
         position: absolute; 
         left: 0.25rem; 
         top: 0.25rem; 
         width: 12px; 
         height: 12px; 
-        background: #22c55e; 
-        border-radius: 50%; 
-        z-index: 1;
-    }
-    .progress-bar {
-        background: linear-gradient(to right, #4ade80, #22c55e);
-        height: 4px;
-        border-radius: 2px;
-        transition: width 1s ease;
-    }
-
-    #mobile-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 40;
-        opacity: 0;
-        visibility: hidden;
+        background: #10b981; border-radius: 50%; z-index: 1; 
+    } 
+    .progress-bar { 
+        background: linear-gradient(to right, #10b981, #d1fae5); 
+        height: 4px; 
+        border-radius: 2px; 
+        transition: width 1s ease; 
+    } /* Mobile Backdrop */ 
+    #mobile-backdrop { 
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0, 0, 0, 0.5); 
+        z-index: 40; 
+        opacity: 0; 
+        visibility: hidden; 
+        transition: all 0.3s ease; 
+    } 
+    #mobile-backdrop.active { 
+        opacity: 1; 
+        visibility: visible; 
+    } /* Sidebar States */ 
+    #sidebar { 
+        transition: transform 0.3s ease-in-out; 
+    } 
+    #sidebar.collapsed { 
+        transform: translateX(-100%) !important; /* Full hide di desktop */ width: 0; 
+    } 
+    #sidebar.collapsed nav ul li span { 
+        opacity: 0; /* Hide text saat collapsed */ 
+    } /* Toggle Button Styles */ 
+    .toggle-btn { 
         transition: all 0.3s ease;
-    }
-    #mobile-backdrop.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    #sidebar {
-        transition: transform 0.3s ease-in-out;
-    }
-    #sidebar.collapsed {
-        transform: translateX(-100%) !important;
-        width: 0;
-    }
-    #sidebar.collapsed nav ul li span {
-        opacity: 0;
-    }
-
-    .toggle-btn {
-        transition: all 0.3s ease;
-    }
-    .toggle-btn:hover {
-        background: rgba(21,128,61,0.15);
-    }
-
-    @media (prefers-color-scheme: dark) {
-        body { background: #14532d; color: #f1f5f9; }
-        .bg-white { background: #166534; }
-        #sidebar { background: linear-gradient(180deg, #ffffffff, #ffffffff); }
-        footer.footer { background: #86efac !important; color: #166534 !important; }
-    }
-
-    .animate-spin-slow {
-        animation: spin 3s linear infinite;
-    }
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-
-    @keyframes pulse-glow {
-        0%, 100% {
-            box-shadow: 0 0 0 0 rgba(16,185,129,0.4);
-        }
-        50% {
-            box-shadow: 0 0 15px 3px rgba(16,185,129,0.3);
-        }
-    }
-    .pulse-glow {
-        animation: pulse-glow 2s infinite;
-    }
-
-    /* 🌿 Samakan warna header container Riwayat Setoran */
-.bg-gradient-to-r.from-green-600.to-emerald-500 {
-    background-color: #a7f3d0 !important; /* hijau pastel lembut */
-    background-image: none !important; /* hilangkan gradasi */
-    color: #065f46 !important; /* teks tetap kontras dan elegan */
-}
-
-</style>
-
+    } 
+    .toggle-btn:hover { 
+        background: rgba(16, 185, 129, 0.1); 
+    } /* Dark mode (opsional) */ 
+    @media (prefers-color-scheme: dark) { 
+        body { background: #1e293b; color: #f1f5f9; } 
+        .bg-white { background: #334155; } 
+    } /* Slow spin for icon */ 
+    .animate-spin-slow { 
+        animation: spin 3s linear infinite; 
+    } 
+    @keyframes spin { 
+        from { transform: rotate(0deg); } 
+        to { transform: rotate(360deg); } 
+    } 
+    @keyframes pulse-glow { 0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(34,197,94,0.5); 
+    } 50% { 
+        box-shadow: 0 0 15px 3px rgba(34,197,94,0.4); 
+        } 
+    } 
+    .pulse-glow { 
+        animation: pulse-glow 2s infinite; 
+    } 
+    </style>
 </head>
 <body class="bg-gray-50 flex min-h-screen">
     <!-- Mobile Backdrop -->
@@ -248,15 +191,6 @@
                 <span class="text-sm sm:text-base">Riwayat Kas</span>
             </a>
         </li>
-
-        <li>
-            <a href="{{ route('logout') }}" 
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                class="nav-link flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group">
-                <i class="fas fa-sign-out-alt w-4 sm:w-5 mr-2 sm:mr-3 text-gray-400 group-hover:text-red-600 transition-transform group-hover:scale-110"></i>
-                <span class="text-sm sm:text-base">Logout</span>
-            </a>
-        </li>
     </ul>
 </nav>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
@@ -276,14 +210,37 @@
         </h2>
         <p class="mt-1 text-sm sm:text-base opacity-90">@yield('header_subtitle')</p>
     </div>
-    <div class="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-end">
-        <div class="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-            <span class="font-semibold text-sm sm:text-base text-center sm:text-right">Halo, {{ auth()->user()->name }}</span>
+
+    <!-- 🔽 BAGIAN PROFIL DIPERBARUI -->
+    <div class="relative group">
+        <div class="flex items-center space-x-3 cursor-pointer select-none">
+            <span class="font-semibold text-sm sm:text-base text-center sm:text-right">
+                Halo, {{ auth()->user()->name }}
+            </span>
             <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10B981&color=fff&size=32" 
-                 alt="Avatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-lg ring-2 ring-white/40 hover:ring-white/60 transition-all">
+                alt="Avatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-lg ring-2 ring-white/40 hover:ring-white/60 transition-all">
+            <i class="fas fa-chevron-down text-white/80 text-sm"></i>
+        </div>
+
+        <!-- 🔽 Dropdown menu logout -->
+        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+            <div class="px-4 py-3 border-b border-gray-200 text-gray-800">
+                <p class="font-semibold">{{ auth()->user()->name }}</p>
+                <p class="text-xs text-gray-500">{{ auth()->user()->email ?? 'Petugas' }}</p>
+            </div>
+            <a href="{{ route('logout') }}" 
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
         </div>
     </div>
 </header>
+
+<!-- Form logout (tidak dihapus, hanya dipindah ke bawah layout agar tetap berfungsi) -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+    @csrf
+</form>
 
         @if (session('success'))
             <div class="bg-green-100 border border-green-200 text-green-800 p-3 sm:p-4 mb-4 sm:mb-6 rounded-2xl shadow-md animate-pulse text-sm sm:text-base" role="alert">

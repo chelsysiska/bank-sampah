@@ -42,7 +42,9 @@
         <div class="flex items-center justify-between">
             <div class="flex flex-col justify-between min-h-[90px]">
                 <h3 class="text-base font-semibold opacity-90">Total Berat (kg)</h3>
-                <p class="text-3xl font-bold leading-none mt-1">{{ number_format($totalBerat, 2) }}</p>
+                <p class="text-3xl font-bold leading-none mt-1">
+    {{ number_format($totalBeratSemuaNasabah ?? $totalBerat, 2) }}
+</p>
             </div>
             <div class="flex items-center justify-center w-14 h-14 bg-purple-500 text-white rounded-xl shrink-0 shadow-md">
                 <i class="fas fa-weight-hanging text-2xl animate-pulse"></i>
@@ -56,7 +58,9 @@
     <div class="flex items-center justify-between">
         <div class="flex flex-col justify-between min-h-[90px] **flex-grow mr-3**">
             <h3 class="text-base font-semibold opacity-90">Pendapatan Semua Nasabah</h3>
-            <p class="text-3xl font-bold leading-none mt-1">Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
+            <p class="text-3xl font-bold leading-none mt-1">
+    Rp{{ number_format($totalHargaSemuaNasabah ?? $totalHarga, 0, ',', '.') }}
+</p>
         </div>
         <div class="flex items-center justify-center w-14 h-14 bg-yellow-500 text-white rounded-xl shrink-0 shadow-md">
             <i class="fas fa-wallet text-2xl animate-pulse"></i>

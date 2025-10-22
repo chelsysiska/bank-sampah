@@ -278,6 +278,53 @@
         .footer a:hover {
             color: white;
         }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 60;
+            width: 200px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(90%);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(100%);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #374151;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 0.5rem;
+            margin: 0.25rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .dropdown-item i {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen relative">
@@ -354,18 +401,6 @@
                         <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-purple-400 transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </li>
-
-                <li class="mt-6 pt-4 border-t border-gray-100">
-                    <a href="{{ route('logout') }}" 
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                        class="nav-item flex items-center px-3 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group">
-                        <div class="w-9 h-9 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110">
-                            <i class="fas fa-sign-out-alt text-sm text-red-400 group-hover:text-red-600"></i>
-                        </div>
-                        <span class="font-medium text-base">Logout</span>
-                        <i class="fas fa-chevron-right ml-auto text-xs text-gray-300 group-hover:text-red-400 transition-transform group-hover:translate-x-1"></i>
-                    </a>
-                </li>
             </ul>
         </nav>  
         <!-- Footer Sidebar -->
@@ -399,7 +434,7 @@
                     <i class="fas fa-bars text-green-600 text-lg"></i>
                 </button>
                 
-                <div class="min-w-0 flex-1 md:flex-initial">
+                                <div class="min-w-0 flex-1 md:flex-initial">
                     <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center flex-wrap">
                         <i class="fas fa-leaf text-green-500 mr-3" style="animation-delay: 0.5s;"></i>
                         <span class="break-words bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">@yield('header_title', 'Dashboard Nasabah')</span>
@@ -408,15 +443,25 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4 w-full md:w-auto justify-end relative z-10">
-                <div class="text-right">
-                    <p class="text-gray-700 font-semibold text-lg">Halo, <span class="text-green-600">{{ auth()->user()->name }}</span></p>
-                    <p class="text-gray-500 text-sm flex items-center justify-end">
-                        <i class="fas fa-shield-alt text-green-400 mr-1"></i>
-                        Akun Terverifikasi
-                    </p>
+                <div class="dropdown relative">
+                    <button id="profile-dropdown-btn" class="flex items-center space-x-3 focus:outline-none hover:bg-white/50 rounded-xl p-2 transition-all duration-200">
+                        <div class="text-right">
+                            <p class="text-gray-700 font-semibold text-lg">Halo, <span class="text-green-600">{{ auth()->user()->name }}</span></p>
+                            <p class="text-gray-500 text-sm flex items-center justify-end">
+                                <i class="fas fa-shield-alt text-green-400 mr-1"></i>
+                                Akun Terverifikasi
+                            </p>
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10b981&color=fff&size=64&bold=true&font-size=0.8" 
+                             alt="Avatar" class="w-12 h-12 md:w-14 md:h-14 rounded-2xl shadow-lg border-2 border-white floating">
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200 dropdown-icon" id="dropdown-icon"></i>
+                    </button>
+                    <div id="profile-dropdown-menu" class="dropdown-menu">
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
                 </div>
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=10b981&color=fff&size=64&bold=true&font-size=0.8" 
-                     alt="Avatar" class="w-12 h-12 md:w-14 md:h-14 rounded-2xl shadow-lg border-2 border-white floating">
             </div>
         </header>
         
@@ -479,6 +524,11 @@
             const toggleDesktopBtnHeader = document.getElementById('toggle-desktop-btn-header');
             const closeSidebarBtn = document.getElementById('close-sidebar');
 
+            // Profile dropdown
+            const profileDropdownBtn = document.getElementById('profile-dropdown-btn');
+            const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+            const dropdownIcon = document.getElementById('dropdown-icon');
+
             // State sidebar
             let isSidebarOpen = window.innerWidth >= 769;
 
@@ -535,6 +585,23 @@
             if (toggleDesktopBtnHeader) toggleDesktopBtnHeader.addEventListener('click', toggleSidebar);
             if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebar);
             if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+            // Profile dropdown toggle
+            if (profileDropdownBtn) {
+                profileDropdownBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileDropdownMenu.classList.toggle('open');
+                    dropdownIcon.classList.toggle('rotate-180');
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (profileDropdownBtn && !profileDropdownBtn.contains(e.target) && profileDropdownMenu && !profileDropdownMenu.contains(e.target)) {
+                    profileDropdownMenu.classList.remove('open');
+                    dropdownIcon.classList.remove('rotate-180');
+                }
+            });
 
             // Close sidebar ketika klik link navigasi (mobile)
             document.querySelectorAll('#sidebar a').forEach(link => {

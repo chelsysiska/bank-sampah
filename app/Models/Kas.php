@@ -19,6 +19,7 @@ class Kas extends Model
         'jumlah',       // jumlah uang (dalam Rupiah, integer)
         'keterangan',   // catatan transaksi
         'dokumentasi',  // path file bukti (opsional)
+        'petugas_id', 
     ];
 
     /**
@@ -29,4 +30,10 @@ class Kas extends Model
     protected $casts = [
         'jumlah' => 'integer',
     ];
+
+    // ✅ Tambahkan relasi ke Petugas tanpa mengubah kode lama
+    public function petugas()
+{
+    return $this->belongsTo(User::class, 'petugas_id');
+}
 }

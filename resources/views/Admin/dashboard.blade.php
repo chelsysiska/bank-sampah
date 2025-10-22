@@ -16,12 +16,14 @@
     <!-- Total Pendapatan Card -->
     <div class="card-hover bg-gradient-to-br from-yellow-100 to-yellow-50 border border-yellow-300 shadow-lg rounded-2xl p-6 flex flex-col justify-between">
         <div class="flex items-center gap-3">
-            <div class="bg-yellow-500 text-white p-3 rounded-xl shadow-md">
+            <div class="flex justify-center items-center w-14 h-14 bg-yellow-500 text-white rounded-xl shrink-0 shadow-md">
                 <i class="fas fa-coins text-xl"></i>
             </div>
-            <div>
-                <p class="text-gray-700 font-medium text-sm">Total Pendapatan Semua Nasabah</p>
-                <p class="text-3xl font-bold text-yellow-700 break-words whitespace-normal">
+            <div class="flex-grow" style="min-height:65px;"> <!-- tambahkan tinggi tetap -->
+                <p class="text-gray-700 font-medium text-sm leading-tight whitespace-nowrap overflow-hidden text-ellipsis"> <!-- tambahkan nowrap -->
+                    Total Pendapatan Semua Nasabah
+                </p>
+                <p class="text-3xl font-bold text-yellow-700 break-words whitespace-normal leading-tight mt-1">
                     Rp{{ number_format($totalPendapatanSemuaNasabah, 0, ',', '.') }}
                 </p>
                 <p class="text-xs text-yellow-700/70 mt-1">💰 Total akumulasi</p>
@@ -32,12 +34,14 @@
     <!-- Total Berat Sampah Card -->
     <div class="card-hover bg-gradient-to-br from-green-100 to-green-50 border border-green-300 shadow-lg rounded-2xl p-6 flex flex-col justify-between">
         <div class="flex items-center gap-3">
-            <div class="bg-green-500 text-white p-3 rounded-xl shadow-md">
+            <div class="flex justify-center items-center w-14 h-14 bg-green-500 text-white rounded-xl shrink-0 shadow-md">
                 <i class="fas fa-weight text-xl"></i>
             </div>
-            <div>
-                <p class="text-gray-700 font-medium text-sm">Total Berat Sampah</p>
-                <p class="text-3xl font-bold text-green-700 break-words whitespace-normal">
+            <div class="flex-grow" style="min-height:65px;"> <!-- tambahkan tinggi sama -->
+                <p class="text-gray-700 font-medium text-sm leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                    Total Berat Sampah
+                </p>
+                <p class="text-3xl font-bold text-green-700 break-words whitespace-normal leading-tight mt-1">
                     {{ number_format($totalBeratSemuaNasabah, 2, ',', '.') }} kg
                 </p>
                 <p class="text-xs text-green-700/70 mt-1">♻️ Sampah terkumpul</p>
@@ -47,13 +51,17 @@
 
     <!-- Total Uang Kas Card -->
     <div class="card-hover bg-gradient-to-br from-blue-100 to-blue-50 border border-blue-300 shadow-lg rounded-2xl p-6 flex flex-col justify-between">
-        <div class="flex items-center gap-3">
-            <div class="bg-blue-500 text-white p-3 rounded-xl shadow-md">
+        <div class="flex items-center gap-3" style="align-items: flex-start;"> <!-- ✅ tetap sejajar atas -->
+            <!-- 🟦 Tambahan style agar kotak icon dompet sejajar -->
+            <div class="flex justify-center items-center w-14 h-14 bg-sky-500 text-white rounded-xl shrink-0 shadow-md" 
+                 style="margin-top:4px; align-self:flex-start;"> <!-- ✅ tambahkan margin-top kecil agar pas sejajar -->
                 <i class="fas fa-wallet text-xl"></i>
             </div>
-            <div>
-                <p class="text-gray-700 font-medium text-sm">Total Uang Kas</p>
-                <p class="text-3xl font-bold text-blue-700 break-words whitespace-normal">
+            <div class="flex-grow" style="min-height:65px;"> <!-- tambahkan tinggi sama -->
+                <p class="text-gray-700 font-medium text-sm leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                    Total Uang Kas
+                </p>
+                <p class="text-3xl font-bold text-blue-700 break-words whitespace-normal leading-tight mt-1">
                     Rp{{ number_format($totalKas, 0, ',', '.') }}
                 </p>
                 <p class="text-xs text-blue-700/70 mt-1">📘 Kas operasional</p>
@@ -189,6 +197,7 @@
                             <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Jenis</th>
                             <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Keterangan</th>
                             <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Jumlah</th>
+                            <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase tracking-wider">Petugas</th>
                             @if(auth()->user()->isAdmin())
                                 <th class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Bukti</th>
                             @endif
@@ -215,6 +224,9 @@
                                 <td class="px-4 py-3 text-sm font-medium {{ $kas->jenis === 'pemasukan' ? 'text-green-600' : 'text-red-600' }}">
                                     Rp{{ number_format($kas->jumlah, 0, ',', '.') }}
                                 </td>
+                                <td class="px-4 py-3 text-gray-700">
+    {{ $kas->petugas->nama_petugas ?? $kas->petugas->name ?? '-' }}
+</td>
                                 @if(auth()->user()->isAdmin() && $kas->dokumentasi)
                                     <td class="px-4 py-3 text-sm">
                                         <a href="{{ asset('storage/' . $kas->dokumentasi) }}" target="_blank" class="text-blue-600 hover:underline">
